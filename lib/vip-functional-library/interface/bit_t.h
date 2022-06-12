@@ -35,6 +35,30 @@ public:
             value[i] = 0x00; //0000 0000
         } 
     }
+    bit128_t& operator=(const bit128_t& that){
+        for(int i=0; i<16; i++){
+            this->value[i] = that.value[i]; 
+        }         
+        return *this;
+    }
+    bit128_t& operator=(volatile bit128_t& that){
+        for(int i=0; i<16; i++){
+            this->value[i] = that.value[i]; 
+        } 
+        return *this;
+    }
+    operator bool() const{
+        for(int i=0; i<16; i++){
+            if(value[i]!=0) return true; //0000 0000
+        } 
+        return false;
+    }
+    operator bool() volatile{
+        for(int i=0; i<16; i++){
+            if(value[i]!=0) return true; //0000 0000
+        } 
+        return false;
+    }
     bit128_t(uint64_t upper_value, uint64_t lower_pad){
         init(upper_value, lower_pad);
     }

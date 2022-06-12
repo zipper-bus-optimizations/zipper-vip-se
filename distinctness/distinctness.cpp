@@ -31,8 +31,10 @@ isDistinct(VIP_ENCINT elements[], VIP_ENCINT &dup)
 
   for (int i=SIZE-1; i >= 0; i--)
   {
-    for (int j=0; j < SIZE; j++)
-      dup = VIP_CMOV(elements[i] == elements[j] && i!=j, elements[j], dup);
+    for (int j=0; j < SIZE; j++){
+		  VIP_ENCINT cond = elements[i] == elements[j] && i!=j;
+      dup = VIP_CMOV( cond, elements[j], dup);
+		}
   }
 
   return (dup == MAX);

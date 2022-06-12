@@ -34,12 +34,14 @@ minVal(VIP_ENCINT dist[V], VIP_ENCBOOL known[V])
 	for(int i=0;i<V;i++){
 		condition = (distVal>dist[i])&&!known[i];
 		distVal = VIP_CMOV(condition,dist[i],distVal);
-		min = VIP_CMOV(condition, (VIP_ENCINT)i, min);					
+		VIP_ENCINT t = i;
+		min = VIP_CMOV(condition, t, min);					
 	}
-		
+
+	VIP_ENCINT one = 1;
 	for(int i=0;i<V;i++){
 		condition = (min==i);
-		known[i] = VIP_CMOV(condition,VIP_ENCBOOL(true),known[i]);
+		known[i] = VIP_CMOV(condition, one,known[i]);
 	}
 #else	
 	for (int i=0; i<V; i++)
@@ -70,10 +72,13 @@ minSpanTree(VIP_ENCINT graph[V][V], VIP_ENCINT path[V])
 	VIP_ENCBOOL condition=false;
 		
 	//sets the source vertex as known and gives it a distance of 0;	
+	VIP_ENCINT max = INT_MAX;
+	VIP_ENCINT one = 1;
+	VIP_ENCINT zero = 0;
 	for(int i=0;i<V;i++){
 		condition = (min==i);
-		dist[i] = VIP_CMOV(condition,VIP_ENCINT(0),VIP_ENCINT(INT_MAX));
-		known[i] = VIP_CMOV(condition,VIP_ENCBOOL(true),VIP_ENCBOOL(false));	
+		dist[i] = VIP_CMOV(condition,zero,max);
+		known[i] = VIP_CMOV(condition,one, zero);	
 	}
 		
 	for(int k = 0;k<V;k++){	

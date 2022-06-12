@@ -54,7 +54,8 @@ floydWarshall (VIP_ENCINT graph[][V])
         // i to j, then update the value of dist[i][j]
 #ifdef VIP_DO_MODE
         VIP_ENCBOOL _pred = (dist[i][k] + dist[k][j] < dist[i][j]);
-        dist[i][j] = VIP_CMOV(_pred, dist[i][k] + dist[k][j], dist[i][j]);
+        VIP_ENCINT addition = dist[i][k] + dist[k][j];
+        dist[i][j] = VIP_CMOV(_pred, addition, dist[i][j]);
 #else /* !VIP_DO_MODE */
         if (dist[i][k] + dist[k][j] < dist[i][j])
           dist[i][j] = dist[i][k] + dist[k][j];

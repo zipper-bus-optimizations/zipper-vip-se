@@ -53,7 +53,7 @@ inline VIP_VEC_ENCINT   operator>>   (VIP_VEC_ENCINT lhs, int rhs)   { return lh
 #define VIP_VEC_ENCINT      std::valarray<VIP_ENCINT>
 #define VIP_DEC(X)          (X)
 #define VIP_DEC_VEC(X)      (X) 
-#define VIP_CMOV(P,A,B)     ((P) ? (A) : (B))
+#define VIP_CMOV(P,A,B)     CMOV(P, A, B)
 
 extern inline void vip_init_vector(VIP_VEC_ENCINT* dest, std::vector<int>* source) {
     std::copy(source->begin(), source->end(), std::begin(*dest));
@@ -68,24 +68,23 @@ inline VIP_VEC_ENCINT   operator>>   (VIP_VEC_ENCINT lhs, int rhs)   { return lh
 #include "lib/vip-functional-library/vip-functional-library.h"
 #include <valarray>
 #include <vector>
-using namespace enc_lib;
 
 #define VIP_INIT        VIPInit()
 
 #define VIP_ENCCHAR         enc_char
 #define VIP_ENCINT          enc_int
-#define VIP_ENCUINT         enc_uint32
-#define VIP_ENCUINT64       enc_uint64
-#define VIP_ENCLONG         enc_long
-#define VIP_ENCULONG        enc_ulong
-#define VIP_ENCBOOL         enc_bool
+#define VIP_ENCUINT         enc_int
+#define VIP_ENCUINT64       enc_int
+#define VIP_ENCLONG         enc_int
+#define VIP_ENCULONG        enc_int
+#define VIP_ENCBOOL         enc_int
 #define VIP_ENCFLOAT        enc_float
 #define VIP_ENCDOUBLE       enc_double
 #define VIP_VEC_ENCDOUBLE   std::valarray<VIP_ENCDOUBLE>
 #define VIP_VEC_ENCINT      std::valarray<VIP_ENCINT>
 #define VIP_DEC(X)          ((X).GET_DECRYPTED_VALUE())
 #define VIP_DEC_VEC(X)      (vip_dec_vector(X)) 
-#define VIP_CMOV(P,A,B)     CMOV((P), (A), (B))
+#define VIP_CMOV(P,A,B)     CMOV(P, A, B)
 
 extern inline void vip_init_vector(VIP_VEC_ENCINT* dest, std::vector<int>* source) {
     dest->resize(source->size());

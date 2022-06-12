@@ -50,9 +50,14 @@ static VIP_ENCULONG powm(VIP_ENCULONG b, VIP_ENCULONG e, VIP_ENCUINT m)
   {
     _done = _done || (e == 0);
     VIP_ENCBOOL _pred = ((e & 1) == 1);
-    result = VIP_CMOV(!_done && _pred, (result * b) % (VIP_ENCULONG)m, result);
-		b = VIP_CMOV(!_done, (b * b) % (VIP_ENCULONG)m, b);
-		e = VIP_CMOV(!_done, e / 2, e);
+    VIP_ENCINT not_done = ! _done;
+    VIP_ENCINT not_done_and_pred = not_done && _pred;
+    VIP_ENCINT t1 = (result * b) % (VIP_ENCULONG)m;
+    result = VIP_CMOV(not_done_and_pred, t1 , result);
+    VIP_ENCINT t2 = (b * b) % (VIP_ENCULONG)m;
+		b = VIP_CMOV(not_done, t2, b);
+    VIP_ENCINT t3 = e / 2;
+		e = VIP_CMOV(not_done,t3 , e);
   }
 #else /* !VIP_DO_MODE */
 	while (e != 0) {
@@ -74,7 +79,9 @@ VIP_ENCULONG get_random_int(VIP_ENCULONG low, VIP_ENCULONG high)
 {
 #ifdef VIP_DO_MODE
   VIP_ENCULONG x = (high - low + 1);
-  x = VIP_CMOV(x != 0, x, (VIP_ENCULONG)1); 
+  VIP_ENCINT x_neq_zero = (x != 0);
+  VIP_ENCINT one = (VIP_ENCULONG)1;
+  x = VIP_CMOV(x_neq_zero, x, one); 
 	return (VIP_ENCULONG)myrand() % x + low;
 #else /* !VIP_DO_MODE */
 	return (uint64_t)myrand() % (high - low + 1) + low;
@@ -95,8 +102,11 @@ void split_int(VIP_ENCULONG *s, VIP_ENCULONG *d, VIP_ENCULONG n)
   {
     VIP_ENCBOOL _pred = ((*d & 1) == 0);
     _done = _done || !_pred;
-		*s = VIP_CMOV(!_done && _pred, *s + 1, *s);
-    *d = VIP_CMOV(!_done && _pred, *d / 2, *d);
+    VIP_ENCINT not_done = !_done;
+    VIP_ENCINT s_p_one = *s + 1;
+    VIP_ENCINT d_div_two = *d / 2;
+		*s = VIP_CMOV(not_done, s_p_one, *s);
+    *d = VIP_CMOV(not_done, d_div_two, *d);
 	}
 #else /* !VIP_DO_MODE */
 	while ((*d & 1) == 0)
@@ -130,16 +140,22 @@ miller_rabin_int(VIP_ENCUINT n, uint32_t k)
   VIP_ENCINT _retval = -1;
 
   VIP_ENCBOOL _pred = ((n & 1) == 0);
-  VIP_ENCINT _val = VIP_CMOV(n == 2, (VIP_ENCINT)PT_PRIME, (VIP_ENCINT)PT_COMPOSITE);
-  _retval = VIP_CMOV(!_done && _pred, _val, _retval);
+  VIP_ENCINT pt_prime = PT_PRIME;
+  VIP_ENCINT pt_composite = PT_COMPOSITE;
+  VIP_ENCBOOL _pred_eq_2 = (n == 2);
+  VIP_ENCINT pred_in = (!_done && _pred);
+  VIP_ENCINT _val = VIP_CMOV(_pred_eq_2, pt_prime, pt_composite);
+  _retval = VIP_CMOV(pred_in, _val, _retval);
   _done = _done || _pred;
 
   VIP_ENCBOOL _pred1 = (n == 3);
-  _retval = VIP_CMOV(!_done && _pred1, (VIP_ENCINT)PT_PRIME, _retval);
+  VIP_ENCINT pred_in1 = (!_done && _pred1);
+  _retval = VIP_CMOV(pred_in1, pt_prime, _retval);
   _done = _done || _pred1;
 
-  VIP_ENCBOOL _pred2 = (n < 3);
-  _retval = VIP_CMOV(!_done && _pred2, (VIP_ENCINT)PT_COMPOSITE, _retval);
+  VIP_ENCBOOL _pred2 = (n < 3) ;
+  VIP_ENCINT pred_in2 = (!_done && _pred2);
+  _retval = VIP_CMOV(pred_in2, pt_composite, _retval);
   _done = _done || _pred2;
 
 	nm1 = n - 1;
@@ -163,28 +179,33 @@ miller_rabin_int(VIP_ENCUINT n, uint32_t k)
 
     VIP_ENCBOOL _breakout = false;
     VIP_ENCULONG r = 1;
+    VIP_ENCINT pt_composite = PT_COMPOSITE;
 		for (int ii=0; ii < 64; ii++)
     {
      VIP_ENCBOOL _pred = (r <= s);
-
-		 x = VIP_CMOV(!_done && !_continued && !_breakout && _pred, (x * x) % (VIP_ENCULONG)n, x);
+      VIP_ENCINT c = !_done && !_continued && !_breakout && _pred;
+      VIP_ENCINT t = (x * x) % (VIP_ENCULONG)n;
+		 x = VIP_CMOV(c, t, x);
 
       VIP_ENCBOOL _pred1 = (x == 1);
-      _retval = VIP_CMOV(!_done && !_continued && !_breakout && _pred && _pred1, (VIP_ENCINT)PT_COMPOSITE, _retval);
+      VIP_ENCINT c1 = (!_done && !_continued && !_breakout && _pred && _pred1);
+      _retval = VIP_CMOV(c1, pt_composite, _retval);
       _done = _done || (!_continued && !_breakout && _pred && _pred1);
 
       VIP_ENCBOOL _pred2 = (x == nm1);
       _breakout = _breakout || (!_done && !_continued && _pred && _pred2);
 
-      r++;
+      r = r +1;
 		}
 
     VIP_ENCBOOL _pred3 = (x != nm1);
-    _retval = VIP_CMOV(!_done && !_continued &&  _pred3, (VIP_ENCINT)PT_COMPOSITE, _retval);
+    VIP_ENCINT c = (!_done && !_continued &&  _pred3);
+    _retval = VIP_CMOV(c, pt_composite, _retval);
     _done = _done || (!_continued && _pred3);
 	}
-
-  _retval = VIP_CMOV(!_done, (VIP_ENCINT)PT_PRIME_LIKELY, _retval);
+  VIP_ENCINT likely = PT_PRIME_LIKELY;
+  VIP_ENCINT not_done = !_done;
+  _retval = VIP_CMOV(not_done,likely, _retval);
 	return _retval;
 #else /* !VIP_DO_MODE */
 	/* We need an odd integer greater than 3 */

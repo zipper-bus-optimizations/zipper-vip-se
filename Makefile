@@ -1,5 +1,6 @@
 include ../config.mk
 
+MODE=enc
 #
 # END of user-modifiable variables
 #
@@ -59,7 +60,7 @@ else
 endif
 
 $(TARGET_EXE): $(OBJS)
-	$(LD) $(CFLAGS) -o $@ $(notdir $^) $(LIBS)
+	$(LD) $(CFLAGS) -o $@ $(notdir $^) $(LDFLAGS) $(CLINK_LIBFPGA)
 
 clean:
 	rm -f $(PROG).na $(PROG).do $(PROG).enc *.o core mem.out FOO $(LOCAL_CLEAN)

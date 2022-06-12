@@ -26,7 +26,8 @@ kadane(VIP_ENCINT arr[], int n, VIP_ENCINT &ends_at)
     // an empty subarray)
 #ifdef VIP_DO_MODE
     VIP_ENCBOOL _pred = (max_ending_here > 0);
-    max_ending_here = VIP_CMOV(_pred, max_ending_here, (VIP_ENCINT)0);
+    VIP_ENCINT zero = 0;
+    max_ending_here = VIP_CMOV(_pred, max_ending_here, zero);
 #else /* !VIP_DO_MODE */
     max_ending_here = max(max_ending_here, 0);
 #endif /* !VIP_DO_MODE */
@@ -35,7 +36,8 @@ kadane(VIP_ENCINT arr[], int n, VIP_ENCINT &ends_at)
     // update the result if the current subarray sum is found to be greater
 #ifdef VIP_DO_MODE
     VIP_ENCBOOL _pred1 = (max_so_far < max_ending_here);
-    ends_at = VIP_CMOV(_pred1, (VIP_ENCINT)i, ends_at);
+    VIP_ENCINT num_i = i;
+    ends_at = VIP_CMOV(_pred1, num_i, ends_at);
     max_so_far = VIP_CMOV(_pred1, max_ending_here, max_so_far);
 #else /* !VIP_DO_MODE */
     if (max_so_far < max_ending_here)

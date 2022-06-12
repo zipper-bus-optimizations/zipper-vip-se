@@ -48,7 +48,9 @@ set_intersect(vector<VIP_ENCINT>& setA, vector<VIP_ENCINT>& setB, vector<VIP_ENC
     for (unsigned j=0; j < setB.size(); j++)
     {
 #ifdef VIP_DO_MODE
-      match = VIP_CMOV(setA[i] == setB[j], (VIP_ENCBOOL)true, match);
+      VIP_ENCINT equal = setA[i] == setB[j];
+      VIP_ENCINT t = true;
+      match = VIP_CMOV(equal, t, match);
 #else /* !VIP_DO_MODE */
       if (setA[i] == setB[j])
         match = true;

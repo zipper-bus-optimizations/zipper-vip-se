@@ -32,7 +32,8 @@ VIP_ENCINT
 max(VIP_ENCINT a, VIP_ENCINT b)
 {
 #ifdef VIP_DO_MODE
-  VIP_ENCINT retval = VIP_CMOV(a > b, a, b);
+  VIP_ENCINT cond = a > b;
+  VIP_ENCINT retval = VIP_CMOV(cond, a, b);
   return retval; 
 #else /* !VIP_DO_MODE */
   if (a > b)
@@ -59,10 +60,14 @@ knapSack(VIP_ENCINT wt[], VIP_ENCINT val[], VIP_ENCINT K[N+1][W+1])
       {
 #ifdef VIP_DO_MODE
         VIP_ENCINT Kw = -1;
-        for (int k=0; k<=W; k++)
-          Kw = VIP_CMOV((VIP_ENCINT)k == ((VIP_ENCINT)w-wt[i-1]), K[i-1][k], Kw);
+        for (int k=0; k<=W; k++){
+          VIP_ENCINT intermediate = (VIP_ENCINT)w-wt[i-1];
+          VIP_ENCINT  cond = (k == intermediate);
+          Kw = VIP_CMOV(cond, K[i-1][k], Kw);
+        }
         VIP_ENCINT maxval = max(val[i-1] + Kw,  K[i-1][w]);
-        K[i][w] = VIP_CMOV(wt[i-1] <= w, maxval, K[i-1][w]);
+        VIP_ENCINT cond1 = wt[i-1] <= w;
+        K[i][w] = VIP_CMOV(cond1, maxval, K[i-1][w]);
 #else /* !VIP_DO_MODE */
         if (wt[i-1] <= w)
           K[i][w] = max(val[i-1] + K[i-1][w-wt[i-1]],  K[i-1][w]);

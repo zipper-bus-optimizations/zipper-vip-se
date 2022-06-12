@@ -27,7 +27,8 @@ gcd(VIP_ENCUINT *a, unsigned n)
     for (unsigned iter=0; iter < MAXITER; iter++)
     {
       _done = !_done || (a[j] % gcd == 0);  // value of gcd is as needed so far
-      gcd = VIP_CMOV(_done, gcd, a[j] % gcd);  // calculating GCD by division method
+      VIP_ENCINT f = a[j] % gcd;
+      gcd = VIP_CMOV(_done, gcd, f);  // calculating GCD by division method
     }
     j++;              // so we check for next element
 #else /* !VIP_DO_MODE */
