@@ -14,7 +14,29 @@ using namespace opae::fpga::types;
 
 int close_accel();
 int init_accel();
-enum Inst{NOOP, CMOV_I, ADD, SUB, NEG, MUL, DIV, MOD, LSHIFT, RSHIFT,  LT, EQ, GT, NEQ, LEQ, GEQ, AND, OR, XOR_I, NOT};
+typedef struct Inst{
+	public:
+	const static uint8_t NOOP = 0;
+	const static uint8_t CMOV = 0b01100000; 
+	const static uint8_t ADD =  0b00100000;
+	const static uint8_t SUB =  0b00100100;
+	const static uint8_t MUL =  0b00101000;
+	const static uint8_t DIV =  0b00101100;
+	const static uint8_t MOD =  0b00110000;
+	const static uint8_t NEG =  0b00110100;
+	const static uint8_t LSHIFT = 0b00000100;
+	const static uint8_t RSHIFT = 0b00001000;
+	const static uint8_t LT  = 0b01000100;
+	const static uint8_t GT  = 0b01001000;
+	const static uint8_t LEQ = 0b01001100;
+	const static uint8_t GEQ = 0b01010000;
+	const static uint8_t EQ  = 0b01010100;
+	const static uint8_t NEQ = 0b01011000;
+	const static uint8_t XOR = 0b10000000;
+	const static uint8_t OR  = 0b10000100;
+	const static uint8_t AND = 0b10001000;
+	const static uint8_t NOT = 0b10001100;
+} Inst;
 struct OpAddr{
 	/*2 bits for mode, if mode == 2, then the least significant bit is for id*/
 	/*one hot encoding for cachline*/
@@ -61,7 +83,7 @@ class enc_int{
 			this->in_fpga = false;
 		};
 		~enc_int();
-		enc_int compute(enc_int const &obj1, enc_int const &obj2, const Inst inst);
+		enc_int compute(enc_int const &obj1, enc_int const &obj2, const uint8_t inst);
 		enc_int operator + (enc_int const &obj);
 		enc_int operator - (enc_int const &obj);
 		enc_int operator- ();

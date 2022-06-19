@@ -133,7 +133,7 @@ enc_int& enc_int::get_val(){
 	return *this;
 }
 
-enc_int enc_int::compute(enc_int const &obj1, enc_int const &obj2, const Inst inst){
+enc_int enc_int::compute(enc_int const &obj1, enc_int const &obj2, const uint8_t inst){
 	// std::cout <<"in compute"<<std::endl;
 	OpAddr ops[3];
 	enc_int ret;
@@ -190,7 +190,7 @@ enc_int enc_int::compute(enc_int const &obj1, enc_int const &obj2, const Inst in
 	req_q_pointer++;
 	#endif
 
-	if(inst == Inst::CMOV_I){
+	if(inst == Inst::CMOV){
 		/*with reuse*/
 		#ifdef REUSE
 		if(obj2.in_fpga && result_q_pointer!= obj2.location ){
@@ -285,7 +285,7 @@ enc_int enc_int::operator * (enc_int const &obj){
 }
 
 enc_int enc_int::CMOV(enc_int const &t, enc_int const &f){
-	return this->compute(t, f, Inst::CMOV_I);
+	return this->compute(t, f, Inst::CMOV);
 }
 
 enc_int& enc_int::operator = (enc_int const &obj){
@@ -378,7 +378,7 @@ enc_int enc_int::operator | (enc_int const &obj){
 }
 
 enc_int enc_int::operator ^ (enc_int const &obj){
-	enc_int result = this->compute(obj, enc_int(), Inst::XOR_I);
+	enc_int result = this->compute(obj, enc_int(), Inst::XOR);
 	result.val = 0;
 	return result;
 }
