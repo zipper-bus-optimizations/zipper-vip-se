@@ -235,8 +235,7 @@ module ofs_plat_afu
 
     // flip the reset n
     assign req_valid = is_csr_write && (mmio_req_hdr.address == 4);
-    assign mode = mmio_write_data[60:59];
-    assign inst = mmio_write_data[58:56];
+    assign inst = mmio_write_data[63:56];
     assign operands_value[2] = mmio_write_data[55:40];
     assign operands_mode[2] = mmio_write_data[55:54];
     assign operands_value[1] = mmio_write_data[39:24];
@@ -258,37 +257,25 @@ module ofs_plat_afu
 
     logic mem_write_req_valid;
     logic[7:0] mem_write_bits_wr_addr;
-    logic mem_write_bits_result_isZero;
-    logic mem_write_bits_result_isNaR;
     logic[31:0] mem_write_bits_result_out;
-    logic mem_write_bits_result_lt; 
-    logic mem_write_bits_result_eq; 
-    logic mem_write_bits_result_gt;
-    logic[4:0] mem_write_bits_result_exceptions;
 
-    POSIT_Locality posit_fu(
+
+    Locality se_fu(
     .clock(clk),
     .reset(!reset_n), 
     .io_request_ready(req_ready), 
     .io_request_valid(req_valid), 
-    .io_request_bits_operands_0_value({24'b0,operands_value[0]}), 
+    .io_request_bits_operands_0_value({120'b0,operands_value[0]}), 
     .io_request_bits_operands_0_mode(operands_mode[0]), 
-    .io_request_bits_operands_1_value({24'b0,operands_value[1]}), 
+    .io_request_bits_operands_1_value({120'b0,operands_value[1]}), 
     .io_request_bits_operands_1_mode(operands_mode[1]), 
-    .io_request_bits_operands_2_value({24'b0,operands_value[2]}), 
+    .io_request_bits_operands_2_value({120'b0,operands_value[2]}), 
     .io_request_bits_operands_2_mode(operands_mode[2]), 
     .io_request_bits_inst(inst), 
-    .io_request_bits_mode(mode), 
     .io_request_bits_wr_addr(wr_addr), 
     .io_mem_write_ready(!host_ccip.sRx.c1TxAlmFull), 
     .io_mem_write_valid(mem_write_req_valid), 
-    .io_mem_write_bits_result_isZero(mem_write_bits_result_isZero), 
-    .io_mem_write_bits_result_isNaR(mem_write_bits_result_isNaR), 
     .io_mem_write_bits_result_out(mem_write_bits_result_out), 
-    .io_mem_write_bits_result_lt(mem_write_bits_result_lt), 
-    .io_mem_write_bits_result_eq(mem_write_bits_result_eq), 
-    .io_mem_write_bits_result_gt(mem_write_bits_result_gt), 
-    .io_mem_write_bits_result_exceptions(mem_write_bits_result_exceptions), 
     .io_mem_write_bits_wr_addr(mem_write_bits_wr_addr), 
     .io_mem_read_req_valid(mem_read_req_valid), 
     .io_mem_read_req_addr(mem_read_req_addr), 
@@ -422,9 +409,7 @@ module ofs_plat_afu
         host_ccip.sTx.c1.hdr.req_type <=  eREQ_WRPUSH_I;
         host_ccip.sTx.c1.hdr.address <=  wr_mem_hdr_addr;
         host_ccip.sTx.c1.hdr.mdata <= 'b0;
-        host_ccip.sTx.c1.data <=  {3'b0, mem_write_bits_result_isZero, mem_write_bits_result_isNaR,
-                        mem_write_bits_result_lt, mem_write_bits_result_eq, 
-                        mem_write_bits_result_gt, mem_write_bits_result_out};
+        host_ccip.sTx.c1.data <=  {mem_write_bits_result_out};
         host_ccip.sTx.c1.valid <=  mem_write_req_valid;
 
       end
