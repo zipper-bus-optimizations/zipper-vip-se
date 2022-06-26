@@ -60,7 +60,7 @@ else
 endif
 
 $(TARGET_EXE): $(OBJS)
-	$(LD) $(CFLAGS) -o $@ $(notdir $^) $(LDFLAGS) $(CLINK_LIBFPGA)
+	$(LD) $(CFLAGS) -o $@ $(notdir $^) $(LDFLAGS) $(CLINK_LIBASE)
 
 clean:
 	rm -f $(PROG).na $(PROG).do $(PROG).enc *.o core mem.out FOO $(LOCAL_CLEAN)

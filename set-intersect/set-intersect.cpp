@@ -63,6 +63,7 @@ set_intersect(vector<VIP_ENCINT>& setA, vector<VIP_ENCINT>& setB, vector<VIP_ENC
 int
 main(void)
 {
+   init_accel();
   vector<VIP_ENCINT> setA(SETA_SIZE);
   vector<VIP_ENCINT> setB(SETB_SIZE);
   vector<VIP_ENCBOOL> setA_match(SETA_SIZE);

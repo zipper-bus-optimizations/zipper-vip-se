@@ -95,6 +95,7 @@ isDistinct(VIP_ENCINT elements[], VIP_ENCINT &dup)
 int
 main(void)
 {
+  init_accel();
   VIP_ENCINT dup;
 
   bool res1, res2;

@@ -139,11 +139,14 @@ enc_int enc_int::compute(enc_int const &obj1, enc_int const &obj2, const uint8_t
 	enc_int ret;
 	uint8_t result_q_pointer = global_counter % NUM_FPGA_ENTRIES;
 	uint64_t mask = (1<<9-1)<<4;
+	//std::cout << "mark 1"<<std::endl;
 	/*with reuse*/
 	#ifdef REUSE
 	if( this->in_fpga && result_q_pointer!= this->location){
+	//std::cout << "mark 2"<<std::endl;
 		ops[0].addr = this->location + (1 << 14);
 	}else{
+	//std::cout << "mark 3"<<std::endl;
 		uint16_t offset = CALC_OFFSET(req_q_pointer);
 		uint16_t cacheline = CALC_CACHELINE_ONE_HOT(req_q_pointer);
 		uint8_t id = CALC_ID(req_q_pointer);
@@ -153,11 +156,14 @@ enc_int enc_int::compute(enc_int const &obj1, enc_int const &obj2, const uint8_t
 		op.valid_w_id = id + 2;
 		mempcpy(((void*)req->c_type() + CALC_OFFSET_IN_BYTE(req_q_pointer) + CALC_CACHELINE_OFFSET_IN_BYTE(req_q_pointer)), &op, READ_GRANULARITY);
 		req_q_pointer++;
+	//std::cout << "mark 8"<<std::endl;
 	}
 
 	if( obj1.in_fpga && result_q_pointer!= obj1.location ){
+	//std::cout << "mark 4"<<std::endl;
 		ops[1].addr = obj1.location + (1 << 14);
 	}else{
+	//std::cout << "mark 5"<<std::endl;
 		uint16_t offset = CALC_OFFSET(req_q_pointer);
 		uint16_t cacheline = CALC_CACHELINE_ONE_HOT(req_q_pointer);
 		uint8_t id = CALC_ID(req_q_pointer);
@@ -171,6 +177,8 @@ enc_int enc_int::compute(enc_int const &obj1, enc_int const &obj2, const uint8_t
 	#endif
 	/*no reuse*/
 	#ifdef NOREUSE
+	//std::cout << "mark 6"<<std::endl;
+
 	uint16_t offset = CALC_OFFSET(req_q_pointer);
 	uint16_t cacheline = CALC_CACHELINE_ONE_HOT(req_q_pointer);
 	uint8_t id = CALC_ID(req_q_pointer);
@@ -179,6 +187,7 @@ enc_int enc_int::compute(enc_int const &obj1, enc_int const &obj2, const uint8_t
 	memcpy(op.val, this->val.value,sizeof(op.val));
 	op.valid_w_id = id + 2;
 	mempcpy(((void*)req->c_type() + CALC_OFFSET_IN_BYTE(req_q_pointer) + CALC_CACHELINE_OFFSET_IN_BYTE(req_q_pointer)), &op, READ_GRANULARITY);
+	//std::cout << "mark 7"<<std::endl;
 	req_q_pointer++;
 	offset = CALC_OFFSET(req_q_pointer);
 	cacheline = CALC_CACHELINE_ONE_HOT(req_q_pointer);
@@ -188,6 +197,8 @@ enc_int enc_int::compute(enc_int const &obj1, enc_int const &obj2, const uint8_t
 	op.valid_w_id = id + 2;
 	mempcpy(((void*)req->c_type() + CALC_OFFSET_IN_BYTE(req_q_pointer) + CALC_CACHELINE_OFFSET_IN_BYTE(req_q_pointer)), &op, READ_GRANULARITY);
 	req_q_pointer++;
+	//std::cout << "mark 8"<<std::endl;
+
 	#endif
 
 	if(inst == Inst::CMOV){
@@ -240,7 +251,7 @@ enc_int enc_int::compute(enc_int const &obj1, enc_int const &obj2, const uint8_t
 	mempcpy((uint8_t*)&write_req+1, ops, 3*sizeof(OpAddr));
 	uint8_t insmod =  inst;
 	write_req += ((uint64_t)insmod) << 56;
-
+	//std::cout << "inst: "<<std::bitset<64>(write_req)<<std::endl;
 	global_counter ++;
 	memset((void*)result_track[result_q_pointer].ptr->result.value,0,sizeof(uint8_t)*16);
 
@@ -249,6 +260,7 @@ enc_int enc_int::compute(enc_int const &obj1, enc_int const &obj2, const uint8_t
   __sync_synchronize();
 
 	accel->write_csr64(16, write_req);
+	//std::cout << "mark 10"<<std::endl;
 	// std::cout <<"compute success"<<std::endl;
 	return ret;
 }
@@ -289,6 +301,7 @@ enc_int enc_int::CMOV(enc_int const &t, enc_int const &f){
 }
 
 enc_int& enc_int::operator = (enc_int const &obj){
+	//std::cout <<"mark 13"<<std::endl;
 	if(this->in_fpga){
 		result_track[this->location].crntEncInt.remove(this);
 	}
@@ -299,33 +312,31 @@ enc_int& enc_int::operator = (enc_int const &obj){
 	if(this->in_fpga){
 		result_track[this->location].crntEncInt.push_back(this);
 	}
+	//std::cout <<"mark 14"<<std::endl;
 	return *this;
 }
 
 enc_int enc_int::operator < (enc_int const &obj){
 	enc_int result = this->compute(obj, enc_int(), Inst::LT);
-	result.val = 0;
 	return result;
 }
 enc_int enc_int::operator > (enc_int const &obj){
 	enc_int result = this->compute(obj, enc_int(), Inst::GT);
-	result.val = 0;
+	//std::cout <<"mark 11"<<std::endl;
+	//std::cout <<"mark 12"<<std::endl;
 	return result;
 }
 
 enc_int enc_int::operator << (enc_int const &obj){
 	enc_int result = this->compute(obj, enc_int(), Inst::LSHIFT);
-	result.val = 0;
 	return result;
 }
 enc_int enc_int::operator >> (enc_int const &obj){
 	enc_int result = this->compute(obj, enc_int(), Inst::RSHIFT);
-	result.val = 0;
 	return result;
 }
 enc_int enc_int::operator == (enc_int const &obj){
 	enc_int result = this->compute(obj, enc_int(), Inst::EQ);
-	result.val = 0;
 	return result;
 }
 enc_int& enc_int::operator = (int const &obj){
@@ -339,53 +350,44 @@ enc_int& enc_int::operator = (int const &obj){
 
 enc_int enc_int::operator <= (enc_int const &obj){
 	enc_int result = this->compute(obj, enc_int(), Inst::LEQ);
-	result.val = 0;
 	return result;
 }
 enc_int enc_int::operator >= (enc_int const &obj){
 	enc_int result = this->compute(obj, enc_int(), Inst::GEQ);
-	result.val = 0;
 	return result;
 }
 enc_int enc_int::operator != (enc_int const &obj){
 	enc_int result = this->compute(obj, enc_int(), Inst::NEQ);
-	result.val = 0;
 	return result;
 }
 
 enc_int enc_int::operator && (enc_int const &obj){
 	enc_int result = this->compute(obj, enc_int(), Inst::AND);
-	result.val = 0;
 	return result;
 }
 
 enc_int enc_int::operator & (enc_int const &obj){
 	enc_int result = this->compute(obj, enc_int(), Inst::AND);
-	result.val = 0;
 	return result;
 }
 
 enc_int enc_int::operator || (enc_int const &obj){
 	enc_int result = this->compute(obj, enc_int(), Inst::OR);
-	result.val = 0;
 	return result;
 }
 
 enc_int enc_int::operator | (enc_int const &obj){
 	enc_int result = this->compute(obj, enc_int(), Inst::OR);
-	result.val = 0;
 	return result;
 }
 
 enc_int enc_int::operator ^ (enc_int const &obj){
 	enc_int result = this->compute(obj, enc_int(), Inst::XOR);
-	result.val = 0;
 	return result;
 }
 
 enc_int enc_int::operator !(){
 	enc_int result = this->compute(enc_int(), enc_int(), Inst::NOT);
-	result.val = 0;
 	return result;
 }
 

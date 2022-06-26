@@ -1,6 +1,4 @@
 Attic/
-config.h
-config.mk
 *.o
 *.na
 *.do
@@ -13,3 +11,5 @@ FOO1
 mem.out
 *.log
 */bin/*
+hw/build_sim/*
+hw/build_fpga/*

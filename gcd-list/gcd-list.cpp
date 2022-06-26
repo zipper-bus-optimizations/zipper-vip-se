@@ -47,7 +47,7 @@ main(void)
 {
   // initialize RNG
   mysrand(42);
-
+  init_accel();
   unsigned n = 64;
   VIP_ENCUINT *a = new VIP_ENCUINT [n];
   for (unsigned i = 0; i < n; i++)

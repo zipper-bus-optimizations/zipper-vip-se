@@ -121,6 +121,7 @@ genrand(void)
 int
 main(void) 
 { 
+   init_accel();
   VIP_INIT; 
   MATRIX_A   = 0x9908b0df;   /* constant vector a */
   UPPER_MASK = 0x80000000;   /* most significant w-r bits */

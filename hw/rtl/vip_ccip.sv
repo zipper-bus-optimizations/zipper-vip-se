@@ -228,8 +228,7 @@ module ofs_plat_afu
     logic req_ready;
     logic[2:0][1:0] operands_mode;
     logic[2:0][7:0] operands_value;
-    logic[2:0] inst;
-    logic[1:0] mode;
+    logic[7:0] inst;
     logic[47:0] wr_addr;
 
 

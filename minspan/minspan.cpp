@@ -252,6 +252,7 @@ displayTree(VIP_ENCINT graph[V][V], VIP_ENCINT path[V])
 int
 main()
 {
+   init_accel();
 	// VIP_ENCINT source = 0;
 	// VIP_ENCINT destination = 1;
 	VIP_ENCINT graph[V][V];

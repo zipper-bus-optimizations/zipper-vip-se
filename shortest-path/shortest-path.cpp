@@ -88,6 +88,7 @@ printSolution(VIP_ENCINT dist[][V])
 int
 main(void)
 {
+   init_accel();
   /* Let us create the following weighted graph
           10
      (0)------->(3)

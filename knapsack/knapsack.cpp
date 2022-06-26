@@ -82,6 +82,7 @@ knapSack(VIP_ENCINT wt[], VIP_ENCINT val[], VIP_ENCINT K[N+1][W+1])
 int
 main(void)
 {
+   init_accel();
   int n = N;
   int w = W;
   VIP_ENCINT K[N+1][W+1];

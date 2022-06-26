@@ -258,6 +258,7 @@ int q_head = 0;
 int
 main(void)
 {
+   init_accel();
   // initialize the RNG
   mysrand(42);
 

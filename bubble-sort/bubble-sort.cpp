@@ -41,8 +41,11 @@ bubblesort(VIP_ENCINT *data, unsigned size)
         swaps++;
       }
 #else /* VIP_DO_MODE */
+      std::cout<< "insert1 i: "<<i<<" j: "<<j<<std::endl;
       VIP_ENCBOOL do_swap = data[j] > data[j+1];
+      std::cout<< "insert2 i: "<<i<<" j: "<<j<<std::endl;
       VIP_ENCINT tmp = data[j];
+      std::cout<< "insert3 i: "<<i<<" j: "<<j<<std::endl;
       data[j] = VIP_CMOV(do_swap, data[j+1], data[j]);
       data[j+1] = VIP_CMOV(do_swap, tmp, data[j+1]);
       swaps++;
@@ -59,6 +62,7 @@ bubblesort(VIP_ENCINT *data, unsigned size)
 int
 main(void)
 {
+   init_accel();
   // initialize the privacy enhanced execution target
   VIP_INIT;
 
@@ -72,7 +76,6 @@ main(void)
   print_data(data, DATASET_SIZE);
 
   {
-    Stopwatch s("VIP_Bench Runtime");
     bubblesort(data, DATASET_SIZE);
   }
   print_data(data, DATASET_SIZE);
