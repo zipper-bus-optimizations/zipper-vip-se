@@ -16,7 +16,7 @@ rebuild: clean build
 build: setup
 	cd build_fpga; qsub-synth
 
-setup: ${SOURCE} ${RTL}/vip_ccip.sv ${RTL}/se.v
+setup: ${SOURCE} ${RTL}/vip_ccip.sv ${RTL}/SE.v
 	afu_synth_setup -s ${SOURCE} ${BUILD_DIR}
 
 .PHONY:clean

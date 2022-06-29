@@ -59,9 +59,14 @@ else
 	$(error MODE is not defined (add: MODE={na|do|enc}).)
 endif
 
-$(TARGET_EXE): $(OBJS)
+$(TARGET_EXE): $(TARGET_EXE).fpga $(TARGET_EXE).ase 
+
+$(TARGET_EXE).fpga: $(OBJS)
+	$(LD) $(CFLAGS) -o $@ $(notdir $^) $(LDFLAGS) $(CLINK_LIBFPGA)
+
+$(TARGET_EXE).ase: $(OBJS)
 	$(LD) $(CFLAGS) -o $@ $(notdir $^) $(LDFLAGS) $(CLINK_LIBASE)
 
 clean:
-	rm -f $(PROG).na $(PROG).do $(PROG).enc *.o core mem.out FOO $(LOCAL_CLEAN)
+	rm -f $(PROG).na $(PROG).do $(PROG).enc.* *.o core mem.out FOO $(LOCAL_CLEAN)
 

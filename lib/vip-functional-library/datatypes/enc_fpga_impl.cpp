@@ -97,6 +97,7 @@ int init_accel(){
 */
 void enc_int::print_val(){
 	std::cout << "enc_int: ";
+	this->get_val();
 	for(int i =0; i <16; i++){
 		std::cout << (int)this->val.value[i] <<std::endl;
 	}
@@ -108,7 +109,7 @@ void enc_int::get_val_at_slot(const uint8_t& pos, bool keep){
 	// std::cout <<"pos_to_get: "<<(int)pos <<" ptr: "<<(int)result_track[pos].ptr <<" list_size: "<< result_track[pos].crntEncInt.size()<<std::endl;
 	volatile Result* ptr = result_track[pos].ptr;
 	if(ptr != nullptr){
-		while(ptr->result){}
+		while(!ptr->result){}
 		for(auto it = result_track[pos].crntEncInt.begin(); it != result_track[pos].crntEncInt.end(); ++it){
 			(*it)->in_fpga = keep;
 			if(!(*it)->valid){
@@ -184,6 +185,7 @@ enc_int enc_int::compute(enc_int const &obj1, enc_int const &obj2, const uint8_t
 	uint8_t id = CALC_ID(req_q_pointer);
 	ops[0].addr = offset + cacheline + (id << 14) + (1 << 15);
 	Operand op;
+	this->get_val();
 	memcpy(op.val, this->val.value,sizeof(op.val));
 	op.valid_w_id = id + 2;
 	mempcpy(((void*)req->c_type() + CALC_OFFSET_IN_BYTE(req_q_pointer) + CALC_CACHELINE_OFFSET_IN_BYTE(req_q_pointer)), &op, READ_GRANULARITY);
@@ -193,6 +195,7 @@ enc_int enc_int::compute(enc_int const &obj1, enc_int const &obj2, const uint8_t
 	cacheline = CALC_CACHELINE_ONE_HOT(req_q_pointer);
 	id = CALC_ID(req_q_pointer);
 	ops[1].addr = offset + cacheline + (id << 14) + (1 << 15);
+	obj1.get_val();
 	memcpy(op.val, obj1.val.value,sizeof(op.val));
 	op.valid_w_id = id + 2;
 	mempcpy(((void*)req->c_type() + CALC_OFFSET_IN_BYTE(req_q_pointer) + CALC_CACHELINE_OFFSET_IN_BYTE(req_q_pointer)), &op, READ_GRANULARITY);
@@ -225,6 +228,7 @@ enc_int enc_int::compute(enc_int const &obj1, enc_int const &obj2, const uint8_t
 		uint8_t id = CALC_ID(req_q_pointer);
 		ops[2].addr = offset + cacheline + (id << 14) + (1 << 15);
 		Operand op;
+		obj2.get_val();
 		memcpy(op.val, obj2.val.value,sizeof(op.val));
 		op.valid_w_id = id + 2;
 		mempcpy(((void*)req->c_type() + CALC_OFFSET_IN_BYTE(req_q_pointer) + CALC_CACHELINE_OFFSET_IN_BYTE(req_q_pointer)), &op, READ_GRANULARITY);	
@@ -243,6 +247,7 @@ enc_int enc_int::compute(enc_int const &obj1, enc_int const &obj2, const uint8_t
 	ret.in_fpga = true;
 	
 	result_track[result_q_pointer].ptr = (Result*)((void*)result->c_type() +result_q_pointer*WRITE_GRANULARITY);
+
 	uint64_t write_req = 0;
 
 	write_req += result_q_pointer;
@@ -286,11 +291,23 @@ enc_int enc_int::operator- (){
 	return this->compute(enc_int(), enc_int(), Inst::NEG);
 }
 
-enc_int enc_int::operator / (enc_int const &obj){
-	return this->compute(obj, enc_int(), Inst::DIV);
+enc_int enc_int::operator / (enc_int &obj){
+	this->get_val();
+	obj.get_val();
+  uint64_t value1 = decrypt_128_64(this->val);
+  uint64_t value2 = decrypt_128_64(obj.val);
+	int val1 =  *((int*) &value1);
+	int val2 =  *((int*) &value2);
+	return enc_int(val1/val2);
 }
-enc_int enc_int::operator % (enc_int const &obj){
-	return this->compute(obj, enc_int(), Inst::MOD);
+enc_int enc_int::operator % (enc_int &obj){
+	this->get_val();
+	obj.get_val();
+  uint64_t value1 = decrypt_128_64(this->val);
+  uint64_t value2 = decrypt_128_64(obj.val);
+	int val1 =  *((int*) &value1);
+	int val2 =  *((int*) &value2);
+	return enc_int(val1%val2);
 }
 enc_int enc_int::operator * (enc_int const &obj){
 	return this->compute(obj, enc_int(), Inst::MUL);
@@ -393,6 +410,7 @@ enc_int enc_int::operator !(){
 
 int enc_int::decrypt_int(){
 	// More complex decryption function that implements pointer casts rather than static casts 
+	this->get_val();
 	uint64_t value = decrypt_128_64(this->val);
 	return *((int*) &value);
 }
@@ -409,11 +427,18 @@ enc_int operator-(enc_int& obj, const int& that){
 enc_int operator*(enc_int& obj, const int& that){
 	return obj * enc_int(that);
 }
-enc_int operator/(enc_int& obj, const int& that){
-	return obj / enc_int(that);
+enc_int operator/(enc_int& obj, int& that){
+	obj.get_val();
+  uint64_t value = decrypt_128_64(obj.val);
+	int val =  *((int*) &value);
+	return enc_int(val/that);
 }
-enc_int operator%( enc_int& obj, const int& that){
-	return obj % enc_int(that);
+
+enc_int operator%( enc_int& obj, int& that){
+	obj.get_val();
+  uint64_t value = decrypt_128_64(obj.val);
+	int val =  *((int*) &value);
+	return enc_int(val%that);
 }
 
 enc_int operator>(enc_int& obj, const int& that){

@@ -6,7 +6,7 @@
 // include build configuration defines
 #include "../config.h"
 
-#define DATASET_SIZE 256
+#define DATASET_SIZE 3
 VIP_ENCINT data[DATASET_SIZE];
 
 // total swaps executed so far
@@ -17,8 +17,13 @@ void
 print_data(VIP_ENCINT *data, unsigned size)
 {
   fprintf(stdout, "DATA DUMP:\n");
-  for (unsigned i=0; i < size; i++)
+  for (unsigned i=0; i < size; i++){
     fprintf(stdout, "  data[%u] = %d\n", i, VIP_DEC(data[i]));
+    for(int j =0; j< 16; j++){
+      fprintf(stdout,"%x",data[i].val.value[j]);
+    }
+      fprintf(stdout,"\n");
+  }
 }
 
 void
@@ -41,11 +46,8 @@ bubblesort(VIP_ENCINT *data, unsigned size)
         swaps++;
       }
 #else /* VIP_DO_MODE */
-      std::cout<< "insert1 i: "<<i<<" j: "<<j<<std::endl;
       VIP_ENCBOOL do_swap = data[j] > data[j+1];
-      std::cout<< "insert2 i: "<<i<<" j: "<<j<<std::endl;
       VIP_ENCINT tmp = data[j];
-      std::cout<< "insert3 i: "<<i<<" j: "<<j<<std::endl;
       data[j] = VIP_CMOV(do_swap, data[j+1], data[j]);
       data[j+1] = VIP_CMOV(do_swap, tmp, data[j+1]);
       swaps++;

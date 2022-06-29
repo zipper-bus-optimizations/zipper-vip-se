@@ -21,8 +21,6 @@ typedef struct Inst{
 	const static uint8_t ADD =  0b00100000;
 	const static uint8_t SUB =  0b00100100;
 	const static uint8_t MUL =  0b00101000;
-	const static uint8_t DIV =  0b00101100;
-	const static uint8_t MOD =  0b00110000;
 	const static uint8_t NEG =  0b00110100;
 	const static uint8_t LSHIFT = 0b00000100;
 	const static uint8_t RSHIFT = 0b00001000;
@@ -87,9 +85,9 @@ class enc_int{
 		enc_int operator + (enc_int const &obj);
 		enc_int operator - (enc_int const &obj);
 		enc_int operator- ();
-		enc_int operator / (enc_int const &obj);
+		enc_int operator / (enc_int &obj);
 		enc_int operator * (enc_int const &obj);
-		enc_int operator % (enc_int const &obj);
+		enc_int operator % (enc_int &obj);
 		enc_int operator < (enc_int const &obj);
 		enc_int operator > (enc_int const &obj);
 		enc_int operator << (enc_int const &obj);
@@ -116,8 +114,8 @@ class enc_int{
 enc_int operator+(enc_int& obj, const int& that);
 enc_int operator-(enc_int& obj, const int& that);
 enc_int operator*(enc_int& obj, const int& that);
-enc_int operator/(enc_int& obj, const int& that);
-enc_int operator%( enc_int& obj, const int& that);
+enc_int operator/(enc_int& obj, int& that);
+enc_int operator%( enc_int& obj,  int& that);
 enc_int operator>(enc_int& obj, const int& that);
 enc_int operator<(enc_int& obj, const int& that);
 enc_int operator==(enc_int& obj, const int& that);
