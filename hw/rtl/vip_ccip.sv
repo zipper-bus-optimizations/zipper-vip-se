@@ -140,8 +140,8 @@ module ofs_plat_afu
 
     t_ccip_clAddr  req_base_address;
     t_ccip_clAddr  resp_base_address;
-    logic[7:0] req_granularity;
-    logic[7:0] resp_granularity;
+    logic[8:0] req_granularity;
+    logic[8:0] resp_granularity;
 
     t_ccip_mmioData mmio_write_data;
     assign mmio_write_data = host_ccip.sRx.c0.data[CCIP_MMIODATA_WIDTH-1:0];
@@ -179,8 +179,8 @@ module ofs_plat_afu
 
             2: begin
                 $fwrite(32'h80000002,"Writing to write granularity\n");
-              resp_base_address <=  mmio_write_data[CCIP_CLADDR_WIDTH-1:0];
-              resp_granularity <=  mmio_write_data[CCIP_CLADDR_WIDTH+8-1: CCIP_CLADDR_WIDTH]; 
+              resp_base_address <=  mmio_write_data[CCIP_CLADDR_WIDTH:0];
+              resp_granularity <=  mmio_write_data[CCIP_CLADDR_WIDTH+8: CCIP_CLADDR_WIDTH]; 
             end
             6: begin
               meta_data_offset <= mmio_write_data[7:0];
@@ -256,7 +256,7 @@ module ofs_plat_afu
 
     logic mem_write_req_valid;
     logic[7:0] mem_write_bits_wr_addr;
-    logic[31:0] mem_write_bits_result_out;
+    logic[127:0] mem_write_bits_result_out;
 
 
     Locality se_fu(

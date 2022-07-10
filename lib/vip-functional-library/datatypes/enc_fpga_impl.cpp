@@ -109,7 +109,10 @@ void enc_int::get_val_at_slot(const uint8_t& pos, bool keep){
 	// std::cout <<"pos_to_get: "<<(int)pos <<" ptr: "<<(int)result_track[pos].ptr <<" list_size: "<< result_track[pos].crntEncInt.size()<<std::endl;
 	volatile Result* ptr = result_track[pos].ptr;
 	if(ptr != nullptr){
-		while(!ptr->result){}
+		while(!ptr->result){
+			// std::cout <<"hasn't get result"<<std::endl;
+			// std::cout <<"pos: "<<(int)pos<<std::endl;
+		}
 		for(auto it = result_track[pos].crntEncInt.begin(); it != result_track[pos].crntEncInt.end(); ++it){
 			(*it)->in_fpga = keep;
 			if(!(*it)->valid){
@@ -313,8 +316,8 @@ enc_int enc_int::operator * (enc_int const &obj){
 	return this->compute(obj, enc_int(), Inst::MUL);
 }
 
-enc_int enc_int::CMOV(enc_int const &t, enc_int const &f){
-	return this->compute(t, f, Inst::CMOV);
+enc_int enc_int::CMOV(enc_int const &f, enc_int const &cond){
+	return this->compute(f, cond, Inst::CMOV);
 }
 
 enc_int& enc_int::operator = (enc_int const &obj){
@@ -545,7 +548,7 @@ enc_int operator^(const int& that,enc_int& obj){
 }
 
 enc_int CMOV(enc_int& cond, enc_int& t, enc_int& f){
-	return cond.CMOV(t, f);
+	return t.CMOV(f, cond);
 }
 
 enc_int CMOV(enc_int& cond, const int& t,  enc_int& f){

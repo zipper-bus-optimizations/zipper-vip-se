@@ -6,7 +6,7 @@
 // include build configuration defines
 #include "../config.h"
 
-#define DATASET_SIZE 3
+#define DATASET_SIZE 2
 VIP_ENCINT data[DATASET_SIZE];
 
 // total swaps executed so far
