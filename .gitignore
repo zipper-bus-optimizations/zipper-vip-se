@@ -13,3 +13,5 @@ mem.out
 */bin/*
 hw/build_sim/*
 hw/build_fpga/*
+*.ase
+*.fpga
