@@ -7,6 +7,7 @@
 #include <algorithm>
 #include <chrono>
 #include <iostream>
+#include <iomanip>
 #include <string>
 #include <thread>
 #include <bitset>
@@ -53,7 +54,14 @@ int close_accel(){
 	accel->close();
 	return 0;
 }
+
+int setParams(){
+	setParameters();
+	return 0;
+}
+
 int init_accel(){
+	setParameters();
 	if(!accel){
 		properties::ptr_t filter = properties::get();
 		filter->guid.parse(AFU_ACCEL_UUID);
@@ -91,6 +99,27 @@ int init_accel(){
 }
 
 
+enc_int::enc_int(const int64_t in_val){
+	this->val = encrypt_64_128(*((uint64_t*)&in_val));
+	this->valid = true; 
+	this->location = 0;
+	this->in_fpga = false;
+};
+enc_int::enc_int(const bit128_t in_val){
+
+	this->val = in_val;
+	this->valid = true; 
+	this->location = 0;
+	this->in_fpga = false;	
+}
+enc_int::enc_int(){
+	uint64_t value = 0;
+	this->val =  encrypt_64_128(value);
+	this->valid = true; 
+	this->location = 0;
+	this->in_fpga = false;
+};
+
 /*
  enc_int:print_val
  print the value of the enc_int
@@ -99,7 +128,9 @@ void enc_int::print_val(){
 	std::cout << "enc_int: ";
 	this->get_val();
 	for(int i =0; i <16; i++){
-		std::cout << (int)this->val.value[i] <<std::endl;
+		std::cout <<  std::hex<< (this->val.value[i] >> 4);
+		std::cout <<  std::hex<< (this->val.value[i] & ((1<<4)-1));
+
 	}
 	std::cout << std::endl;
 }
@@ -160,7 +191,6 @@ enc_int enc_int::compute(enc_int const &obj1, enc_int const &obj2, const uint8_t
 		op.valid_w_id = id + 2;
 		mempcpy(((void*)req->c_type() + CALC_OFFSET_IN_BYTE(req_q_pointer) + CALC_CACHELINE_OFFSET_IN_BYTE(req_q_pointer)), &op, READ_GRANULARITY);
 		req_q_pointer++;
-	//std::cout << "mark 8"<<std::endl;
 	}
 
 	if( obj1.in_fpga && result_q_pointer!= obj1.location ){
@@ -321,7 +351,6 @@ enc_int enc_int::CMOV(enc_int const &f, enc_int const &cond){
 }
 
 enc_int& enc_int::operator = (enc_int const &obj){
-	//std::cout <<"mark 13"<<std::endl;
 	if(this->in_fpga){
 		result_track[this->location].crntEncInt.remove(this);
 	}
@@ -360,7 +389,7 @@ enc_int enc_int::operator == (enc_int const &obj){
 	return result;
 }
 enc_int& enc_int::operator = (int const &obj){
-	this->val = encrypt_64_128(((uint64_t*) &obj));
+	this->val = encrypt_64_128(*((uint64_t*)&obj));
 	this->valid = true; 
 	this->location = 0;
 	this->in_fpga = false;
@@ -417,6 +446,14 @@ int enc_int::decrypt_int(){
 	uint64_t value = decrypt_128_64(this->val);
 	return *((int*) &value);
 }
+
+int enc_int::decrypt_pad(){
+	// More complex decryption function that implements pointer casts rather than static casts 
+	this->get_val();
+	uint64_t value = decrypt_128_pad(this->val);
+	return *((int*) &value);
+}
+
 int enc_int::GET_DECRYPTED_VALUE(){
 	return this->decrypt_int();
 }

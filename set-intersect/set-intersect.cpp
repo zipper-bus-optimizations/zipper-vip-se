@@ -69,7 +69,6 @@ main(void)
   vector<VIP_ENCBOOL> setA_match(SETA_SIZE);
 
   // initialize the privacy enhanced execution target
-  VIP_INIT;
 
   // initialize the pseudo-RNG
   mysrand(42);

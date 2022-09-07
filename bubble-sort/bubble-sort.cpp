@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <chrono>
+
 #include "utils.h"
 
 // include build configuration defines
@@ -18,7 +20,7 @@ print_data(VIP_ENCINT *data, unsigned size)
 {
   fprintf(stdout, "DATA DUMP:\n");
   for (unsigned i=0; i < size; i++){
-    fprintf(stdout, "  data[%u] = %d\n", i, VIP_DEC(data[i]));
+    fprintf(stdout, "  data[%u] = %x\n", i, VIP_DEC(data[i]));
     for(int j =0; j< 16; j++){
       fprintf(stdout,"%x",data[i].val.value[j]);
     }
@@ -47,6 +49,10 @@ bubblesort(VIP_ENCINT *data, unsigned size)
       }
 #else /* VIP_DO_MODE */
       VIP_ENCBOOL do_swap = data[j] > data[j+1];
+	//     std::cout<< "dataj:"<<std::hex <<data[j].decrypt_int()<<std::endl;
+	//     std::cout<< "dataj+1:"<<std::hex <<data[j+1].decrypt_int()<<std::endl;
+	// std::cout<< "secret key:"<<std::hex << SECRET_KEY.getUpperValue_64b() << SECRET_KEY.getLowerValue_64b()<<std::endl;
+
       VIP_ENCINT tmp = data[j];
       data[j] = VIP_CMOV(do_swap, data[j+1], data[j]);
       data[j+1] = VIP_CMOV(do_swap, tmp, data[j+1]);
@@ -66,7 +72,6 @@ main(void)
 {
    init_accel();
   // initialize the privacy enhanced execution target
-  VIP_INIT;
 
   // initialize the pseudo-RNG
   mysrand(42);
@@ -77,11 +82,21 @@ main(void)
     data[i] = myrand();
   print_data(data, DATASET_SIZE);
 
-  {
-    bubblesort(data, DATASET_SIZE);
-  }
-  print_data(data, DATASET_SIZE);
+    auto start = std::chrono::high_resolution_clock::now();
 
+    bubblesort(data, DATASET_SIZE);
+      // Get ending timepoint
+    auto stop = std::chrono:: high_resolution_clock::now();
+ 
+    // Get duration. Substart timepoints to
+    // get duration. To cast it to proper unit
+    // use duration cast method
+    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
+ 
+
+  print_data(data, DATASET_SIZE);
+    std::cout << "Time taken by function: "
+         << duration.count() << " microseconds" << std::endl;
   // check the array
   for (unsigned i=0; i < DATASET_SIZE-1; i++)
   {

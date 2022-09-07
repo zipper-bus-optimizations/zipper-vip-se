@@ -45,7 +45,6 @@ count(VIP_ENCINT trace)
 int main()
 {
    init_accel();
-	VIP_INIT; 
 		
 	VIP_ENCINT graph[SIZE][SIZE] = {
   {0,1,0,0,1,0,0,0,0,0,0,0,0},

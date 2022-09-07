@@ -13,6 +13,9 @@
 using namespace opae::fpga::types;
 
 int close_accel();
+
+int setParams();
+
 int init_accel();
 typedef struct Inst{
 	public:
@@ -61,25 +64,9 @@ class enc_int{
 
 		void print_val();
 		enc_int& get_val();
-		enc_int(const int& in_val){
-			this->val = encrypt_64_128(((uint64_t*) &in_val));
-			this->valid = true; 
-			this->location = 0;
-			this->in_fpga = false;
-		};
-		enc_int(const bit128_t& in_val){
-			this->val = in_val;
-			this->valid = true; 
-			this->location = 0;
-			this->in_fpga = false;	
-		}
-		enc_int(){
-			int value = 0;
-			this->val =  encrypt_64_128(((uint64_t*) &value));
-			this->valid = true; 
-			this->location = 0;
-			this->in_fpga = false;
-		};
+		enc_int(const int64_t in_val);
+		enc_int(const bit128_t in_val);
+		enc_int();
 		~enc_int();
 		enc_int compute(enc_int const &obj1, enc_int const &obj2, const uint8_t inst);
 		enc_int operator + (enc_int const &obj);
@@ -106,8 +93,9 @@ class enc_int{
 
 		static void get_val_at_slot(const uint8_t& pos, bool keep);
 		enc_int& operator = (enc_int const &obj);
-		enc_int& operator = (int const &obj);
+		enc_int& operator = (int const& obj);
 		int decrypt_int();
+		int decrypt_pad();
 		int GET_DECRYPTED_VALUE();
 };
 

@@ -46,7 +46,6 @@ int
 main(void)
 {
    init_accel();
-  VIP_INIT;
   unsigned int _keytext[4] = { 358852050,	311606025, 739108171, 861449956 };
   unsigned int _plaintext[2] = { 765625614, 14247501 };
   unsigned int cipherref[2] = { 0x9fe2c864, 0xd7da4da4 };
