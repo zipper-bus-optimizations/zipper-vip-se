@@ -440,11 +440,11 @@ enc_int enc_int::operator !(){
 	return result;
 }
 
-int enc_int::decrypt_int(){
+int64_t enc_int::decrypt_int(){
 	// More complex decryption function that implements pointer casts rather than static casts 
 	this->get_val();
 	uint64_t value = decrypt_128_64(this->val);
-	return *((int*) &value);
+	return *((int64_t*) &value);
 }
 
 int enc_int::decrypt_pad(){
@@ -454,7 +454,7 @@ int enc_int::decrypt_pad(){
 	return *((int*) &value);
 }
 
-int enc_int::GET_DECRYPTED_VALUE(){
+int64_t enc_int::GET_DECRYPTED_VALUE(){
 	return this->decrypt_int();
 }
 

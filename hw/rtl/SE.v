@@ -97,22 +97,22 @@ module FU(
   wire [63:0] _GEN_6 = _T_1 ? $signed(_output_T_15) : $signed(_GEN_5); // @[FU.scala 68:39 70:16]
   wire  _T_32 = io_fu_op == 3'h2; // @[FU.scala 81:23]
   wire  _T_33 = io_fu_type == 3'h4; // @[FU.scala 82:21]
-  wire  _output_T_23 = $signed(io_A) == $signed(io_B); // @[FU.scala 84:33]
-  wire  _output_T_25 = $signed(io_A) < $signed(io_B); // @[FU.scala 87:31]
-  wire  _output_T_27 = $signed(io_A) <= $signed(io_B); // @[FU.scala 90:32]
-  wire  _output_T_29 = $signed(io_A) > $signed(io_B); // @[FU.scala 93:31]
-  wire  _output_T_31 = $signed(io_A) >= $signed(io_B); // @[FU.scala 96:32]
-  wire  _output_T_33 = $signed(io_A) != $signed(io_B); // @[FU.scala 99:33]
-  wire  _GEN_7 = _T_27 ? $signed(_output_T_31) : $signed(_output_T_33); // @[FU.scala 94:40 96:14 99:14]
-  wire  _GEN_8 = _T_12 ? $signed(_output_T_29) : $signed(_GEN_7); // @[FU.scala 91:39 93:14]
-  wire  _GEN_9 = _T_15 ? $signed(_output_T_27) : $signed(_GEN_8); // @[FU.scala 88:40 90:14]
-  wire  _GEN_10 = _T_1 ? $signed(_output_T_25) : $signed(_GEN_9); // @[FU.scala 85:39 87:14]
-  wire  _GEN_11 = io_fu_type == 3'h4 ? $signed(_output_T_23) : $signed(_GEN_10); // @[FU.scala 82:33 84:14]
+  wire [1:0] _output_T_23 = $signed(io_A) == $signed(io_B) ? $signed(2'sh1) : $signed(2'sh0); // @[FU.scala 84:20]
+  wire [1:0] _output_T_25 = $signed(io_A) < $signed(io_B) ? $signed(2'sh1) : $signed(2'sh0); // @[FU.scala 87:20]
+  wire [1:0] _output_T_27 = $signed(io_A) <= $signed(io_B) ? $signed(2'sh1) : $signed(2'sh0); // @[FU.scala 90:20]
+  wire [1:0] _output_T_29 = $signed(io_A) > $signed(io_B) ? $signed(2'sh1) : $signed(2'sh0); // @[FU.scala 93:20]
+  wire [1:0] _output_T_31 = $signed(io_A) >= $signed(io_B) ? $signed(2'sh1) : $signed(2'sh0); // @[FU.scala 96:20]
+  wire [1:0] _output_T_33 = $signed(io_A) != $signed(io_B) ? $signed(2'sh1) : $signed(2'sh0); // @[FU.scala 99:20]
+  wire [1:0] _GEN_7 = _T_27 ? $signed(_output_T_31) : $signed(_output_T_33); // @[FU.scala 94:40 96:14 99:14]
+  wire [1:0] _GEN_8 = _T_12 ? $signed(_output_T_29) : $signed(_GEN_7); // @[FU.scala 91:39 93:14]
+  wire [1:0] _GEN_9 = _T_15 ? $signed(_output_T_27) : $signed(_GEN_8); // @[FU.scala 88:40 90:14]
+  wire [1:0] _GEN_10 = _T_1 ? $signed(_output_T_25) : $signed(_GEN_9); // @[FU.scala 85:39 87:14]
+  wire [1:0] _GEN_11 = io_fu_type == 3'h4 ? $signed(_output_T_23) : $signed(_GEN_10); // @[FU.scala 82:33 84:14]
   wire  _T_50 = io_fu_op == 3'h3; // @[FU.scala 101:23]
   wire  _T_51 = $signed(io_cond) != 64'sh0; // @[FU.scala 102:18]
   wire [63:0] _GEN_12 = $signed(io_cond) != 64'sh0 ? $signed(io_A) : $signed(io_B); // @[FU.scala 102:26 104:14 107:14]
   wire [63:0] _GEN_13 = io_fu_op == 3'h3 ? $signed(_GEN_12) : $signed(io_A); // @[FU.scala 101:35 111:14]
-  wire [63:0] _GEN_14 = io_fu_op == 3'h2 ? $signed({64{_GEN_11}}) : $signed(_GEN_13); // @[FU.scala 81:35]
+  wire [63:0] _GEN_14 = io_fu_op == 3'h2 ? $signed({{62{_GEN_11[1]}},_GEN_11}) : $signed(_GEN_13); // @[FU.scala 81:35]
   wire [63:0] _GEN_15 = io_fu_op == 3'h4 ? $signed(_GEN_6) : $signed(_GEN_14); // @[FU.scala 67:38]
   wire [127:0] _GEN_16 = io_fu_op == 3'h1 ? $signed(_GEN_3) : $signed({{64{_GEN_15[63]}},_GEN_15}); // @[FU.scala 52:36]
   wire [127:0] _GEN_17 = io_fu_op == 3'h0 ? $signed({{1{_GEN_0[126]}},_GEN_0}) : $signed(_GEN_16); // @[FU.scala 44:30]
@@ -21361,7 +21361,9 @@ module InvCipher(
   reg [1:0] STM; // @[InvCipher.scala 36:20]
   wire [3:0] _rounds_T_1 = rounds + 4'h1; // @[InvCipher.scala 46:24]
   wire [1:0] _GEN_1 = rounds == 4'ha ? 2'h0 : STM; // @[InvCipher.scala 51:29 52:13 36:20]
+  wire  _T_6 = STM != 2'h0; // @[InvCipher.scala 70:20]
   wire  _io_state_out_valid_T = rounds == 4'hb; // @[InvCipher.scala 73:32]
+  wire  _T_16 = ~reset; // @[InvCipher.scala 78:10]
   AddRoundKey AddRoundKeyModule ( // @[AddRoundKey.scala 25:62]
     .io_state_in_0(AddRoundKeyModule_io_state_in_0),
     .io_state_in_1(AddRoundKeyModule_io_state_in_1),
@@ -21808,6 +21810,242 @@ module InvCipher(
     end else if (2'h2 == STM) begin // @[InvCipher.scala 38:15]
       STM <= _GEN_1;
     end
+    `ifndef SYNTHESIS
+    `ifdef PRINTF_COND
+      if (`PRINTF_COND) begin
+    `endif
+        if (_T_6 & ~reset) begin
+          $fwrite(32'h80000002,"D_STM: %d, rounds: %d\n",STM,rounds); // @[InvCipher.scala 78:10]
+        end
+    `ifdef PRINTF_COND
+      end
+    `endif
+    `endif // SYNTHESIS
+    `ifndef SYNTHESIS
+    `ifdef PRINTF_COND
+      if (`PRINTF_COND) begin
+    `endif
+        if (_T_6 & _T_16) begin
+          $fwrite(32'h80000002,"D_roundKey: %x %x %x %x %x %x %x %x %x %x %x %x %x %x %x %x\n",io_roundKey_0,
+            io_roundKey_1,io_roundKey_2,io_roundKey_3,io_roundKey_4,io_roundKey_5,io_roundKey_6,io_roundKey_7,
+            io_roundKey_8,io_roundKey_9,io_roundKey_10,io_roundKey_11,io_roundKey_12,io_roundKey_13,io_roundKey_14,
+            io_roundKey_15); // @[InvCipher.scala 79:10]
+        end
+    `ifdef PRINTF_COND
+      end
+    `endif
+    `endif // SYNTHESIS
+    `ifndef SYNTHESIS
+    `ifdef PRINTF_COND
+      if (`PRINTF_COND) begin
+    `endif
+        if (_T_6 & _T_16) begin
+          $fwrite(32'h80000002,"state: %x %x %x %x %x %x %x %x %x %x %x %x %x %x %x %x\n",state_0,state_1,state_2,
+            state_3,state_4,state_5,state_6,state_7,state_8,state_9,state_10,state_11,state_12,state_13,state_14,
+            state_15); // @[InvCipher.scala 80:10]
+        end
+    `ifdef PRINTF_COND
+      end
+    `endif
+    `endif // SYNTHESIS
+    `ifndef SYNTHESIS
+    `ifdef PRINTF_COND
+      if (`PRINTF_COND) begin
+    `endif
+        if (_T_6 & _T_16) begin
+          $fwrite(32'h80000002,"add round key: "); // @[InvCipher.scala 81:10]
+        end
+    `ifdef PRINTF_COND
+      end
+    `endif
+    `endif // SYNTHESIS
+    `ifndef SYNTHESIS
+    `ifdef PRINTF_COND
+      if (`PRINTF_COND) begin
+    `endif
+        if (_T_6 & _T_16) begin
+          $fwrite(32'h80000002," %x",AddRoundKeyModule_io_state_out_0); // @[InvCipher.scala 83:11]
+        end
+    `ifdef PRINTF_COND
+      end
+    `endif
+    `endif // SYNTHESIS
+    `ifndef SYNTHESIS
+    `ifdef PRINTF_COND
+      if (`PRINTF_COND) begin
+    `endif
+        if (_T_6 & _T_16) begin
+          $fwrite(32'h80000002," %x",AddRoundKeyModule_io_state_out_1); // @[InvCipher.scala 83:11]
+        end
+    `ifdef PRINTF_COND
+      end
+    `endif
+    `endif // SYNTHESIS
+    `ifndef SYNTHESIS
+    `ifdef PRINTF_COND
+      if (`PRINTF_COND) begin
+    `endif
+        if (_T_6 & _T_16) begin
+          $fwrite(32'h80000002," %x",AddRoundKeyModule_io_state_out_2); // @[InvCipher.scala 83:11]
+        end
+    `ifdef PRINTF_COND
+      end
+    `endif
+    `endif // SYNTHESIS
+    `ifndef SYNTHESIS
+    `ifdef PRINTF_COND
+      if (`PRINTF_COND) begin
+    `endif
+        if (_T_6 & _T_16) begin
+          $fwrite(32'h80000002," %x",AddRoundKeyModule_io_state_out_3); // @[InvCipher.scala 83:11]
+        end
+    `ifdef PRINTF_COND
+      end
+    `endif
+    `endif // SYNTHESIS
+    `ifndef SYNTHESIS
+    `ifdef PRINTF_COND
+      if (`PRINTF_COND) begin
+    `endif
+        if (_T_6 & _T_16) begin
+          $fwrite(32'h80000002," %x",AddRoundKeyModule_io_state_out_4); // @[InvCipher.scala 83:11]
+        end
+    `ifdef PRINTF_COND
+      end
+    `endif
+    `endif // SYNTHESIS
+    `ifndef SYNTHESIS
+    `ifdef PRINTF_COND
+      if (`PRINTF_COND) begin
+    `endif
+        if (_T_6 & _T_16) begin
+          $fwrite(32'h80000002," %x",AddRoundKeyModule_io_state_out_5); // @[InvCipher.scala 83:11]
+        end
+    `ifdef PRINTF_COND
+      end
+    `endif
+    `endif // SYNTHESIS
+    `ifndef SYNTHESIS
+    `ifdef PRINTF_COND
+      if (`PRINTF_COND) begin
+    `endif
+        if (_T_6 & _T_16) begin
+          $fwrite(32'h80000002," %x",AddRoundKeyModule_io_state_out_6); // @[InvCipher.scala 83:11]
+        end
+    `ifdef PRINTF_COND
+      end
+    `endif
+    `endif // SYNTHESIS
+    `ifndef SYNTHESIS
+    `ifdef PRINTF_COND
+      if (`PRINTF_COND) begin
+    `endif
+        if (_T_6 & _T_16) begin
+          $fwrite(32'h80000002," %x",AddRoundKeyModule_io_state_out_7); // @[InvCipher.scala 83:11]
+        end
+    `ifdef PRINTF_COND
+      end
+    `endif
+    `endif // SYNTHESIS
+    `ifndef SYNTHESIS
+    `ifdef PRINTF_COND
+      if (`PRINTF_COND) begin
+    `endif
+        if (_T_6 & _T_16) begin
+          $fwrite(32'h80000002," %x",AddRoundKeyModule_io_state_out_8); // @[InvCipher.scala 83:11]
+        end
+    `ifdef PRINTF_COND
+      end
+    `endif
+    `endif // SYNTHESIS
+    `ifndef SYNTHESIS
+    `ifdef PRINTF_COND
+      if (`PRINTF_COND) begin
+    `endif
+        if (_T_6 & _T_16) begin
+          $fwrite(32'h80000002," %x",AddRoundKeyModule_io_state_out_9); // @[InvCipher.scala 83:11]
+        end
+    `ifdef PRINTF_COND
+      end
+    `endif
+    `endif // SYNTHESIS
+    `ifndef SYNTHESIS
+    `ifdef PRINTF_COND
+      if (`PRINTF_COND) begin
+    `endif
+        if (_T_6 & _T_16) begin
+          $fwrite(32'h80000002," %x",AddRoundKeyModule_io_state_out_10); // @[InvCipher.scala 83:11]
+        end
+    `ifdef PRINTF_COND
+      end
+    `endif
+    `endif // SYNTHESIS
+    `ifndef SYNTHESIS
+    `ifdef PRINTF_COND
+      if (`PRINTF_COND) begin
+    `endif
+        if (_T_6 & _T_16) begin
+          $fwrite(32'h80000002," %x",AddRoundKeyModule_io_state_out_11); // @[InvCipher.scala 83:11]
+        end
+    `ifdef PRINTF_COND
+      end
+    `endif
+    `endif // SYNTHESIS
+    `ifndef SYNTHESIS
+    `ifdef PRINTF_COND
+      if (`PRINTF_COND) begin
+    `endif
+        if (_T_6 & _T_16) begin
+          $fwrite(32'h80000002," %x",AddRoundKeyModule_io_state_out_12); // @[InvCipher.scala 83:11]
+        end
+    `ifdef PRINTF_COND
+      end
+    `endif
+    `endif // SYNTHESIS
+    `ifndef SYNTHESIS
+    `ifdef PRINTF_COND
+      if (`PRINTF_COND) begin
+    `endif
+        if (_T_6 & _T_16) begin
+          $fwrite(32'h80000002," %x",AddRoundKeyModule_io_state_out_13); // @[InvCipher.scala 83:11]
+        end
+    `ifdef PRINTF_COND
+      end
+    `endif
+    `endif // SYNTHESIS
+    `ifndef SYNTHESIS
+    `ifdef PRINTF_COND
+      if (`PRINTF_COND) begin
+    `endif
+        if (_T_6 & _T_16) begin
+          $fwrite(32'h80000002," %x",AddRoundKeyModule_io_state_out_14); // @[InvCipher.scala 83:11]
+        end
+    `ifdef PRINTF_COND
+      end
+    `endif
+    `endif // SYNTHESIS
+    `ifndef SYNTHESIS
+    `ifdef PRINTF_COND
+      if (`PRINTF_COND) begin
+    `endif
+        if (_T_6 & _T_16) begin
+          $fwrite(32'h80000002," %x",AddRoundKeyModule_io_state_out_15); // @[InvCipher.scala 83:11]
+        end
+    `ifdef PRINTF_COND
+      end
+    `endif
+    `endif // SYNTHESIS
+    `ifndef SYNTHESIS
+    `ifdef PRINTF_COND
+      if (`PRINTF_COND) begin
+    `endif
+        if (_T_6 & _T_16) begin
+          $fwrite(32'h80000002,"\n"); // @[InvCipher.scala 85:10]
+        end
+    `ifdef PRINTF_COND
+      end
+    `endif
+    `endif // SYNTHESIS
   end
 // Register and memory initialization
 `ifdef RANDOMIZE_GARBAGE_ASSIGN

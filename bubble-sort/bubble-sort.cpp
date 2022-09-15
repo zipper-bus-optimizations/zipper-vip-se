@@ -21,10 +21,6 @@ print_data(VIP_ENCINT *data, unsigned size)
   fprintf(stdout, "DATA DUMP:\n");
   for (unsigned i=0; i < size; i++){
     fprintf(stdout, "  data[%u] = %x\n", i, VIP_DEC(data[i]));
-    for(int j =0; j< 16; j++){
-      fprintf(stdout,"%x",data[i].val.value[j]);
-    }
-      fprintf(stdout,"\n");
   }
 }
 
@@ -102,6 +98,8 @@ main(void)
   {
     if (VIP_DEC(data[i]) > VIP_DEC(data[i+1]))
     {
+      fprintf(stdout,"i: %d datai:%x\n",i, VIP_DEC(data[i]));
+      fprintf(stdout,"i: %d datai:%x\n",i+1, VIP_DEC(data[i+1]));
       fprintf(stdout, "ERROR: data is not properly sorted.\n");
       return -1;
     }

@@ -94,9 +94,9 @@ class enc_int{
 		static void get_val_at_slot(const uint8_t& pos, bool keep);
 		enc_int& operator = (enc_int const &obj);
 		enc_int& operator = (int const& obj);
-		int decrypt_int();
+		int64_t decrypt_int();
 		int decrypt_pad();
-		int GET_DECRYPTED_VALUE();
+		int64_t GET_DECRYPTED_VALUE();
 };
 
 enc_int operator+(enc_int& obj, const int& that);
