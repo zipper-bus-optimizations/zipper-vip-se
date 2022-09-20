@@ -59,13 +59,25 @@ else
 	$(error MODE is not defined (add: MODE={na|do|enc}).)
 endif
 
-$(TARGET_EXE): $(TARGET_EXE).fpga $(TARGET_EXE).ase 
+$(TARGET_EXE): $(TARGET_EXE).fpga $(TARGET_EXE).ase $(TARGET_EXE)_NOREUSE.fpga $(TARGET_EXE)_NOREUSE.ase $(TARGET_EXE)_BASELINE.fpga $(TARGET_EXE)_BASELINE.ase
 
 $(TARGET_EXE).fpga: $(OBJS)
 	$(LD) $(CFLAGS) -o $@ $(notdir $^) $(LDFLAGS) $(CLINK_LIBFPGA)
 
 $(TARGET_EXE).ase: $(OBJS)
 	$(LD) $(CFLAGS) -o $@ $(notdir $^) $(LDFLAGS) $(CLINK_LIBASE)
+
+$(TARGET_EXE)_NOREUSE.fpga: $(OBJS)
+	$(LD) $(CFLAGS) -o $@ $(notdir $^) $(LDFLAGS) $(CLINK_LIBFPGA_NOREUSE)
+
+$(TARGET_EXE)_NOREUSE.ase: $(OBJS)
+	$(LD) $(CFLAGS) -o $@ $(notdir $^) $(LDFLAGS) $(CLINK_LIBASE_NOREUSE)
+
+$(TARGET_EXE)_BASELINE.fpga: $(OBJS)
+	$(LD) $(CFLAGS) -o $@ $(notdir $^) $(LDFLAGS) $(CLINK_LIBFPGA_BASELINE)
+
+$(TARGET_EXE)_BASELINE.ase: $(OBJS)
+	$(LD) $(CFLAGS) -o $@ $(notdir $^) $(LDFLAGS) $(CLINK_LIBASE_BASELINE)
 
 clean:
 	rm -f $(PROG).na $(PROG).do $(PROG).enc.* *.o core mem.out FOO $(LOCAL_CLEAN)

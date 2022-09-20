@@ -12,7 +12,6 @@
 bit128_t encrypt_64_128(uint64_t value){
     uint64_t pad = 0;
     bit128_t plaintext(value, pad);
-    printf("encrypt: val: %x, pad: %x", value, pad);
     switch(CIPHER){
         case XOR:       return xor_encrypt_128(plaintext);
         case AES128:    return aes128_encrypt_128(plaintext);

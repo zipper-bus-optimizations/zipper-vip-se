@@ -8,7 +8,7 @@
 // include build configuration defines
 #include "../config.h"
 
-#define DATASET_SIZE 2
+#define DATASET_SIZE 2000
 VIP_ENCINT data[DATASET_SIZE];
 
 // total swaps executed so far
@@ -68,7 +68,6 @@ main(void)
 {
    init_accel();
   // initialize the privacy enhanced execution target
-
   // initialize the pseudo-RNG
   mysrand(42);
   // mysrand(time(NULL));
@@ -98,8 +97,6 @@ main(void)
   {
     if (VIP_DEC(data[i]) > VIP_DEC(data[i+1]))
     {
-      fprintf(stdout,"i: %d datai:%x\n",i, VIP_DEC(data[i]));
-      fprintf(stdout,"i: %d datai:%x\n",i+1, VIP_DEC(data[i+1]));
       fprintf(stdout, "ERROR: data is not properly sorted.\n");
       return -1;
     }

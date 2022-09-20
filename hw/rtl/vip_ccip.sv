@@ -227,7 +227,7 @@ module ofs_plat_afu
     logic req_valid;
     logic req_ready;
     logic[2:0][1:0] operands_mode;
-    logic[2:0][7:0] operands_value;
+    logic[2:0][13:0] operands_value;
     logic[7:0] inst;
     logic[47:0] wr_addr;
 
@@ -235,11 +235,11 @@ module ofs_plat_afu
     // flip the reset n
     assign req_valid = is_csr_write && (mmio_req_hdr.address == 4);
     assign inst = mmio_write_data[63:56];
-    assign operands_value[2] = mmio_write_data[55:40];
+    assign operands_value[2] = mmio_write_data[53:40];
     assign operands_mode[2] = mmio_write_data[55:54];
-    assign operands_value[1] = mmio_write_data[39:24];
+    assign operands_value[1] = mmio_write_data[37:24];
     assign operands_mode[1] = mmio_write_data[39:38];
-    assign operands_value[0] = mmio_write_data[23:8];
+    assign operands_value[0] = mmio_write_data[21:8];
     assign operands_mode[0] = mmio_write_data[23:22];
     assign wr_addr = mmio_write_data[7:0];
 
@@ -251,7 +251,7 @@ module ofs_plat_afu
     t_ccip_clData mem_read_req_data;
     logic mem_read_resp_valid;
     assign mem_read_resp_valid = host_ccip.sRx.c0.rspValid && (!host_ccip.sRx.c0.mmioRdValid);
-    assign mem_read_resp_tag = host_ccip.sRx.c0.hdr.mdata[7:0];
+    assign mem_read_resp_tag = host_ccip.sRx.c0.hdr.mdata[12:0];
     assign mem_read_req_data = host_ccip.sRx.c0.data;
 
     logic mem_write_req_valid;
@@ -264,11 +264,11 @@ module ofs_plat_afu
     .reset(!reset_n), 
     .io_request_ready(req_ready), 
     .io_request_valid(req_valid), 
-    .io_request_bits_operands_0_value({120'b0,operands_value[0]}), 
+    .io_request_bits_operands_0_value({114'b0,operands_value[0]}), 
     .io_request_bits_operands_0_mode(operands_mode[0]), 
-    .io_request_bits_operands_1_value({120'b0,operands_value[1]}), 
+    .io_request_bits_operands_1_value({114'b0,operands_value[1]}), 
     .io_request_bits_operands_1_mode(operands_mode[1]), 
-    .io_request_bits_operands_2_value({120'b0,operands_value[2]}), 
+    .io_request_bits_operands_2_value({114'b0,operands_value[2]}), 
     .io_request_bits_operands_2_mode(operands_mode[2]), 
     .io_request_bits_inst(inst), 
     .io_request_bits_wr_addr(wr_addr), 

@@ -12,11 +12,11 @@
 
 using namespace opae::fpga::types;
 
-int close_accel();
+int64_t close_accel();
 
-int setParams();
+int64_t setParams();
 
-int init_accel();
+int64_t init_accel();
 typedef struct Inst{
 	public:
 	const static uint8_t NOOP = 0;
@@ -93,49 +93,49 @@ class enc_int{
 
 		static void get_val_at_slot(const uint8_t& pos, bool keep);
 		enc_int& operator = (enc_int const &obj);
-		enc_int& operator = (int const& obj);
+		enc_int& operator = (int64_t const& obj);
 		int64_t decrypt_int();
-		int decrypt_pad();
+		int64_t decrypt_pad();
 		int64_t GET_DECRYPTED_VALUE();
 };
 
-enc_int operator+(enc_int& obj, const int& that);
-enc_int operator-(enc_int& obj, const int& that);
-enc_int operator*(enc_int& obj, const int& that);
-enc_int operator/(enc_int& obj, int& that);
-enc_int operator%( enc_int& obj,  int& that);
-enc_int operator>(enc_int& obj, const int& that);
-enc_int operator<(enc_int& obj, const int& that);
-enc_int operator==(enc_int& obj, const int& that);
-enc_int operator!=(enc_int& obj, const int& that);
-enc_int operator>=(enc_int& obj, const int& that);
-enc_int operator<=(enc_int& obj, const int& that);
-enc_int operator||(enc_int& obj, const int& that);
-enc_int operator &&(enc_int& obj, const int& that);
-enc_int operator|(enc_int& obj, const int& that);
-enc_int operator&(enc_int& obj, const int& that);
-enc_int operator^(enc_int& obj, const int& that);
-enc_int operator+(const int& that, enc_int& obj);
-enc_int operator-(const int& that, enc_int& obj);
-enc_int operator*(const int& that, enc_int& obj);
-enc_int operator/(const int& that, enc_int& obj);
-enc_int operator%(const int& that, enc_int& obj);
-enc_int operator>(const int& that, enc_int& obj);
-enc_int operator<(const int& that, enc_int& obj);
-enc_int operator>>(const int& that, enc_int& obj);
-enc_int operator<<(const int& that, enc_int& obj);
-enc_int operator==(const int& that, enc_int& obj);
-enc_int operator!=(const int& that, enc_int& obj);
-enc_int operator>=(const int& that,  enc_int& obj);
-enc_int operator<=(const int& that, enc_int& obj);
-enc_int operator&&(const int& that, enc_int& obj);
-enc_int operator||(const int& that, enc_int& obj);
-enc_int operator&(const int& that, enc_int& obj);
-enc_int operator|(const int& that, enc_int& obj);
-enc_int operator^(const int& that,enc_int& obj);
+enc_int operator+(enc_int& obj, const int64_t& that);
+enc_int operator-(enc_int& obj, const int64_t& that);
+enc_int operator*(enc_int& obj, const int64_t& that);
+enc_int operator/(enc_int& obj, int64_t& that);
+enc_int operator%( enc_int& obj,  int64_t& that);
+enc_int operator>(enc_int& obj, const int64_t& that);
+enc_int operator<(enc_int& obj, const int64_t& that);
+enc_int operator==(enc_int& obj, const int64_t& that);
+enc_int operator!=(enc_int& obj, const int64_t& that);
+enc_int operator>=(enc_int& obj, const int64_t& that);
+enc_int operator<=(enc_int& obj, const int64_t& that);
+enc_int operator||(enc_int& obj, const int64_t& that);
+enc_int operator &&(enc_int& obj, const int64_t& that);
+enc_int operator|(enc_int& obj, const int64_t& that);
+enc_int operator&(enc_int& obj, const int64_t& that);
+enc_int operator^(enc_int& obj, const int64_t& that);
+enc_int operator+(const int64_t& that, enc_int& obj);
+enc_int operator-(const int64_t& that, enc_int& obj);
+enc_int operator*(const int64_t& that, enc_int& obj);
+enc_int operator/(const int64_t& that, enc_int& obj);
+enc_int operator%(const int64_t& that, enc_int& obj);
+enc_int operator>(const int64_t& that, enc_int& obj);
+enc_int operator<(const int64_t& that, enc_int& obj);
+enc_int operator>>(const int64_t& that, enc_int& obj);
+enc_int operator<<(const int64_t& that, enc_int& obj);
+enc_int operator==(const int64_t& that, enc_int& obj);
+enc_int operator!=(const int64_t& that, enc_int& obj);
+enc_int operator>=(const int64_t& that,  enc_int& obj);
+enc_int operator<=(const int64_t& that, enc_int& obj);
+enc_int operator&&(const int64_t& that, enc_int& obj);
+enc_int operator||(const int64_t& that, enc_int& obj);
+enc_int operator&(const int64_t& that, enc_int& obj);
+enc_int operator|(const int64_t& that, enc_int& obj);
+enc_int operator^(const int64_t& that,enc_int& obj);
 enc_int CMOV(enc_int& cond, enc_int& t, enc_int& f);
-enc_int CMOV(enc_int& cond, const int& t,  enc_int& f);
-enc_int CMOV(enc_int& cond, enc_int& t, const int& f);
+enc_int CMOV(enc_int& cond, const int64_t& t,  enc_int& f);
+enc_int CMOV(enc_int& cond, enc_int& t, const int64_t& f);
 
 void poll_performance();
 

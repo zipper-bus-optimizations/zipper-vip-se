@@ -16,7 +16,7 @@
 
 using namespace std;
 
-#define SIZE  20
+#define SIZE  200
 #define MAX numeric_limits<int>::max()
 
 

@@ -48,7 +48,7 @@ main(void)
   // initialize RNG
   mysrand(42);
   init_accel();
-  unsigned n = 64;
+  unsigned n = 1000;
   VIP_ENCUINT *a = new VIP_ENCUINT [n];
   for (unsigned i = 0; i < n; i++)
     a[i] = (myrand() % 10000000) * 37;

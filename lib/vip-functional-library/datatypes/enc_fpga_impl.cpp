@@ -47,7 +47,7 @@ void poll_performance(){
 	std::cout <<"[1000, )"<< perf->mem_req_cycles[12] <<std::endl;
 }
 
-int close_accel(){
+int64_t close_accel(){
 	accel->reset();
 	req->release();
 	result->release();
@@ -55,13 +55,13 @@ int close_accel(){
 	return 0;
 }
 
-int setParams(){
+int64_t setParams(){
 	setParameters();
 	return 0;
 }
 
-int init_accel(){
-	setParameters();
+int64_t init_accel(){
+  	setParameters();
 	if(!accel){
 		properties::ptr_t filter = properties::get();
 		filter->guid.parse(AFU_ACCEL_UUID);
@@ -100,7 +100,7 @@ int init_accel(){
 
 
 enc_int::enc_int(const int64_t in_val){
-	this->val = encrypt_64_128(*((uint64_t*)&in_val));
+	this->val = encrypt_64_128(in_val);
 	this->valid = true; 
 	this->location = 0;
 	this->in_fpga = false;
@@ -127,7 +127,7 @@ enc_int::enc_int(){
 void enc_int::print_val(){
 	std::cout << "enc_int: ";
 	this->get_val();
-	for(int i =0; i <16; i++){
+	for(int64_t i =0; i <16; i++){
 		std::cout <<  std::hex<< (this->val.value[i] >> 4);
 		std::cout <<  std::hex<< (this->val.value[i] & ((1<<4)-1));
 
@@ -137,12 +137,12 @@ void enc_int::print_val(){
 
 void enc_int::get_val_at_slot(const uint8_t& pos, bool keep){
 	// std::cout <<"in get_val_at_slot"<<std::endl;
-	// std::cout <<"pos_to_get: "<<(int)pos <<" ptr: "<<(int)result_track[pos].ptr <<" list_size: "<< result_track[pos].crntEncInt.size()<<std::endl;
+	// std::cout <<"pos_to_get: "<<(int64_t)pos <<" ptr: "<<(int64_t)result_track[pos].ptr <<" list_size: "<< result_track[pos].crntEncInt.size()<<std::endl;
 	volatile Result* ptr = result_track[pos].ptr;
 	if(ptr != nullptr){
 		while(!ptr->result){
 			// std::cout <<"hasn't get result"<<std::endl;
-			// std::cout <<"pos: "<<(int)pos<<std::endl;
+			// std::cout <<"pos: "<<(int64_t)pos<<std::endl;
 		}
 		for(auto it = result_track[pos].crntEncInt.begin(); it != result_track[pos].crntEncInt.end(); ++it){
 			(*it)->in_fpga = keep;
@@ -186,10 +186,12 @@ enc_int enc_int::compute(enc_int const &obj1, enc_int const &obj2, const uint8_t
 		uint16_t cacheline = CALC_CACHELINE_ONE_HOT(req_q_pointer);
 		uint8_t id = CALC_ID(req_q_pointer);
 		ops[0].addr = offset + cacheline + (id << 14) + (1 << 15);
+		// std::cout<<"cacheline: "<< std::bitset<16>(cacheline)<<std::endl;
 		Operand op;
 		memcpy(op.val, this->val.value,sizeof(op.val));
 		op.valid_w_id = id + 2;
 		mempcpy(((void*)req->c_type() + CALC_OFFSET_IN_BYTE(req_q_pointer) + CALC_CACHELINE_OFFSET_IN_BYTE(req_q_pointer)), &op, READ_GRANULARITY);
+		// printf("cal:%d, cacheline:%d,offset:%d\n", CALC_OFFSET_IN_BYTE(req_q_pointer), CALC_CACHELINE_OFFSET_IN_BYTE(req_q_pointer), CALC_OFFSET_IN_BYTE(req_q_pointer) + CALC_CACHELINE_OFFSET_IN_BYTE(req_q_pointer));
 		req_q_pointer++;
 	}
 
@@ -202,15 +204,20 @@ enc_int enc_int::compute(enc_int const &obj1, enc_int const &obj2, const uint8_t
 		uint16_t cacheline = CALC_CACHELINE_ONE_HOT(req_q_pointer);
 		uint8_t id = CALC_ID(req_q_pointer);
 		ops[1].addr = offset + cacheline + (id << 14) + (1 << 15);
+		// std::cout<< "req_q_pointer"<<req_q_pointer<<std::endl;
+		// std::cout<< "bits for offset"<<std::bitset<64>(BITS_FOR_OFFSET)<<std::endl;
+		// std::cout << "num cacheline: "<< (req_q_pointer%TOTAL_ENTRIES)/NUM_OPERAND_PER_CACHELINE<<std::endl;
+		// std::cout<< "cacheline: "<< std::bitset<16>(cacheline)<<std::endl;
 		Operand op;
 		memcpy(op.val, obj1.val.value,sizeof(op.val));
 		op.valid_w_id = id + 2;
 		mempcpy(((void*)req->c_type() + CALC_OFFSET_IN_BYTE(req_q_pointer) + CALC_CACHELINE_OFFSET_IN_BYTE(req_q_pointer)), &op, READ_GRANULARITY);
+		// printf("cal:%d, cacheline:%d,offset:%d\n", CALC_OFFSET_IN_BYTE(req_q_pointer), CALC_CACHELINE_OFFSET_IN_BYTE(req_q_pointer), CALC_OFFSET_IN_BYTE(req_q_pointer) + CALC_CACHELINE_OFFSET_IN_BYTE(req_q_pointer));
 		req_q_pointer++;
 	}
 	#endif
 	/*no reuse*/
-	#ifdef NOREUSE
+	#if defined(NOREUSE) || defined(BASELINE)
 	//std::cout << "mark 6"<<std::endl;
 
 	uint16_t offset = CALC_OFFSET(req_q_pointer);
@@ -221,6 +228,7 @@ enc_int enc_int::compute(enc_int const &obj1, enc_int const &obj2, const uint8_t
 	this->get_val();
 	memcpy(op.val, this->val.value,sizeof(op.val));
 	op.valid_w_id = id + 2;
+	// printf("id: %d",id);
 	mempcpy(((void*)req->c_type() + CALC_OFFSET_IN_BYTE(req_q_pointer) + CALC_CACHELINE_OFFSET_IN_BYTE(req_q_pointer)), &op, READ_GRANULARITY);
 	//std::cout << "mark 7"<<std::endl;
 	req_q_pointer++;
@@ -231,6 +239,7 @@ enc_int enc_int::compute(enc_int const &obj1, enc_int const &obj2, const uint8_t
 	obj1.get_val();
 	memcpy(op.val, obj1.val.value,sizeof(op.val));
 	op.valid_w_id = id + 2;
+	// printf("id: %d",id);
 	mempcpy(((void*)req->c_type() + CALC_OFFSET_IN_BYTE(req_q_pointer) + CALC_CACHELINE_OFFSET_IN_BYTE(req_q_pointer)), &op, READ_GRANULARITY);
 	req_q_pointer++;
 	//std::cout << "mark 8"<<std::endl;
@@ -251,11 +260,12 @@ enc_int enc_int::compute(enc_int const &obj1, enc_int const &obj2, const uint8_t
 			memcpy(op.val, obj2.val.value,sizeof(op.val));
 			op.valid_w_id = id + 2;
 			mempcpy(((void*)req->c_type() + CALC_OFFSET_IN_BYTE(req_q_pointer) + CALC_CACHELINE_OFFSET_IN_BYTE(req_q_pointer)), &op, READ_GRANULARITY);
+	// printf("cal:%d, cacheline:%d,offset:%d\n", CALC_OFFSET_IN_BYTE(req_q_pointer), CALC_CACHELINE_OFFSET_IN_BYTE(req_q_pointer), CALC_OFFSET_IN_BYTE(req_q_pointer) + CALC_CACHELINE_OFFSET_IN_BYTE(req_q_pointer));
 			req_q_pointer++;
 		}
 		#endif
 		/*no reuse*/
-		#ifdef NOREUSE
+		#if defined(NOREUSE) || defined(BASELINE)
 		uint16_t offset = CALC_OFFSET(req_q_pointer);
 		uint16_t cacheline = CALC_CACHELINE_ONE_HOT(req_q_pointer);
 		uint8_t id = CALC_ID(req_q_pointer);
@@ -295,11 +305,16 @@ enc_int enc_int::compute(enc_int const &obj1, enc_int const &obj2, const uint8_t
 
 	result_track[result_q_pointer].crntEncInt.push_back(&ret);
 
-  __sync_synchronize();
+  	__sync_synchronize();
 
 	accel->write_csr64(16, write_req);
 	//std::cout << "mark 10"<<std::endl;
 	// std::cout <<"compute success"<<std::endl;
+
+	#ifdef BASELINE
+		ret.get_val();
+	#endif
+
 	return ret;
 }
 
@@ -329,8 +344,8 @@ enc_int enc_int::operator / (enc_int &obj){
 	obj.get_val();
   uint64_t value1 = decrypt_128_64(this->val);
   uint64_t value2 = decrypt_128_64(obj.val);
-	int val1 =  *((int*) &value1);
-	int val2 =  *((int*) &value2);
+	int64_t val1 =  *((int64_t*) &value1);
+	int64_t val2 =  *((int64_t*) &value2);
 	return enc_int(val1/val2);
 }
 enc_int enc_int::operator % (enc_int &obj){
@@ -338,8 +353,8 @@ enc_int enc_int::operator % (enc_int &obj){
 	obj.get_val();
   uint64_t value1 = decrypt_128_64(this->val);
   uint64_t value2 = decrypt_128_64(obj.val);
-	int val1 =  *((int*) &value1);
-	int val2 =  *((int*) &value2);
+	int64_t val1 =  *((int64_t*) &value1);
+	int64_t val2 =  *((int64_t*) &value2);
 	return enc_int(val1%val2);
 }
 enc_int enc_int::operator * (enc_int const &obj){
@@ -388,8 +403,8 @@ enc_int enc_int::operator == (enc_int const &obj){
 	enc_int result = this->compute(obj, enc_int(), Inst::EQ);
 	return result;
 }
-enc_int& enc_int::operator = (int const &obj){
-	this->val = encrypt_64_128(*((uint64_t*)&obj));
+enc_int& enc_int::operator = (int64_t const &obj){
+	this->val = encrypt_64_128(obj);
 	this->valid = true; 
 	this->location = 0;
 	this->in_fpga = false;
@@ -447,140 +462,140 @@ int64_t enc_int::decrypt_int(){
 	return *((int64_t*) &value);
 }
 
-int enc_int::decrypt_pad(){
+int64_t enc_int::decrypt_pad(){
 	// More complex decryption function that implements pointer casts rather than static casts 
 	this->get_val();
 	uint64_t value = decrypt_128_pad(this->val);
-	return *((int*) &value);
+	return *((int64_t*) &value);
 }
 
 int64_t enc_int::GET_DECRYPTED_VALUE(){
 	return this->decrypt_int();
 }
 
-enc_int operator+(enc_int& obj, const int& that){
+enc_int operator+(enc_int& obj, const int64_t& that){
 	return obj + enc_int(that);
 }
-enc_int operator-(enc_int& obj, const int& that){
+enc_int operator-(enc_int& obj, const int64_t& that){
 	return obj - enc_int(that);
 }
-enc_int operator*(enc_int& obj, const int& that){
+enc_int operator*(enc_int& obj, const int64_t& that){
 	return obj * enc_int(that);
 }
-enc_int operator/(enc_int& obj, int& that){
+enc_int operator/(enc_int& obj, int64_t& that){
 	obj.get_val();
   uint64_t value = decrypt_128_64(obj.val);
-	int val =  *((int*) &value);
+	int64_t val =  *((int64_t*) &value);
 	return enc_int(val/that);
 }
 
-enc_int operator%( enc_int& obj, int& that){
+enc_int operator%( enc_int& obj, int64_t& that){
 	obj.get_val();
   uint64_t value = decrypt_128_64(obj.val);
-	int val =  *((int*) &value);
+	int64_t val =  *((int64_t*) &value);
 	return enc_int(val%that);
 }
 
-enc_int operator>(enc_int& obj, const int& that){
+enc_int operator>(enc_int& obj, const int64_t& that){
 	return obj > enc_int(that);
 }
-enc_int operator<(enc_int& obj, const int& that){
+enc_int operator<(enc_int& obj, const int64_t& that){
 	return obj < enc_int(that);
 }
-enc_int operator==(enc_int& obj, const int& that){
+enc_int operator==(enc_int& obj, const int64_t& that){
 	return obj == enc_int(that);
 }
-enc_int operator!=(enc_int& obj, const int& that){
+enc_int operator!=(enc_int& obj, const int64_t& that){
 	return obj != enc_int(that);
 }
-enc_int operator>=(enc_int& obj, const int& that){
+enc_int operator>=(enc_int& obj, const int64_t& that){
 	return obj >= enc_int(that);
 }
-enc_int operator<=(enc_int& obj, const int& that){
+enc_int operator<=(enc_int& obj, const int64_t& that){
 	return obj <= enc_int(that);
 }
-enc_int operator||(enc_int& obj, const int& that){
+enc_int operator||(enc_int& obj, const int64_t& that){
 	return obj || enc_int(that);
 }
-enc_int operator &&(enc_int& obj, const int& that){
+enc_int operator &&(enc_int& obj, const int64_t& that){
 	return obj && enc_int(that);
 }
-enc_int operator|(enc_int& obj, const int& that){
+enc_int operator|(enc_int& obj, const int64_t& that){
 	return obj | enc_int(that);
 }
-enc_int operator&(enc_int& obj, const int& that){
+enc_int operator&(enc_int& obj, const int64_t& that){
 	return obj & enc_int(that);
 }
-enc_int operator^(enc_int& obj, const int& that){
+enc_int operator^(enc_int& obj, const int64_t& that){
 	return obj ^ enc_int(that);
 }
 
-enc_int operator+(const int& that, enc_int& obj){
+enc_int operator+(const int64_t& that, enc_int& obj){
 	return enc_int(that) + obj;
 }
-enc_int operator-(const int& that, enc_int& obj){
+enc_int operator-(const int64_t& that, enc_int& obj){
 	return enc_int(that) - obj;
 }
 
-enc_int operator*(const int& that, enc_int& obj){
+enc_int operator*(const int64_t& that, enc_int& obj){
 	return enc_int(that) * obj;
 }
 
-enc_int operator/(const int& that, enc_int& obj){
+enc_int operator/(const int64_t& that, enc_int& obj){
 	return enc_int(that) / obj;
 }
 
-enc_int operator%(const int& that, enc_int& obj){
+enc_int operator%(const int64_t& that, enc_int& obj){
 	return enc_int(that) % obj;
 }
 
-enc_int operator>(const int& that, enc_int& obj){
+enc_int operator>(const int64_t& that, enc_int& obj){
 	return enc_int(that) > obj;
 }
-enc_int operator<(const int& that, enc_int& obj){
+enc_int operator<(const int64_t& that, enc_int& obj){
 	return enc_int(that) < obj;
 }
 
-enc_int operator>>(const int& that, enc_int& obj){
+enc_int operator>>(const int64_t& that, enc_int& obj){
 	return enc_int(that) >> obj;
 }
-enc_int operator<<(const int& that, enc_int& obj){
+enc_int operator<<(const int64_t& that, enc_int& obj){
 	return enc_int(that) << obj;
 }
 
-enc_int operator==(const int& that, enc_int& obj){
+enc_int operator==(const int64_t& that, enc_int& obj){
 	return enc_int(that) == obj;
 }
 
-enc_int operator!=(const int& that, enc_int& obj){
+enc_int operator!=(const int64_t& that, enc_int& obj){
 	return enc_int(that) != obj;
 }
 
-enc_int operator>=(const int& that,  enc_int& obj){
+enc_int operator>=(const int64_t& that,  enc_int& obj){
 	return enc_int(that) >= obj;
 }
 
-enc_int operator<=(const int& that, enc_int& obj){
+enc_int operator<=(const int64_t& that, enc_int& obj){
 	return enc_int(that) <= obj;
 }
 
-enc_int operator&&(const int& that, enc_int& obj){
+enc_int operator&&(const int64_t& that, enc_int& obj){
 	return enc_int(that) && obj;
 }
 
-enc_int operator||(const int& that, enc_int& obj){
+enc_int operator||(const int64_t& that, enc_int& obj){
 	return enc_int(that) || obj;
 }
 
-enc_int operator&(const int& that, enc_int& obj){
+enc_int operator&(const int64_t& that, enc_int& obj){
 	return enc_int(that) & obj;
 }
 
-enc_int operator|(const int& that, enc_int& obj){
+enc_int operator|(const int64_t& that, enc_int& obj){
 	return enc_int(that) | obj;
 }
 
-enc_int operator^(const int& that,enc_int& obj){
+enc_int operator^(const int64_t& that,enc_int& obj){
 	return enc_int(that) ^ obj;
 }
 
@@ -588,12 +603,12 @@ enc_int CMOV(enc_int& cond, enc_int& t, enc_int& f){
 	return t.CMOV(f, cond);
 }
 
-enc_int CMOV(enc_int& cond, const int& t,  enc_int& f){
+enc_int CMOV(enc_int& cond, const int64_t& t,  enc_int& f){
 	enc_int enc_tv = enc_int(t);
 	return CMOV(cond, enc_tv, f);
 }
 
-enc_int CMOV(enc_int& cond, enc_int& t, const int& f){
+enc_int CMOV(enc_int& cond, enc_int& t, const int64_t& f){
 	enc_int enc_f = enc_int(f);
 	return CMOV(cond, t, enc_f);
 }

@@ -24,6 +24,10 @@ CLINK_LIBASE =  $(ASE_LIBS) /homes/chshibo/Shibo/vip-bench/lib/vip-functional-li
 
 CLINK_LIBFPGA_NOREUSE = $(FPGA_LIBS) /homes/chshibo/Shibo/vip-bench/lib/vip-functional-library/lib/libencintfpga_noreuse.a
 CLINK_LIBASE_NOREUSE =  $(ASE_LIBS) /homes/chshibo/Shibo/vip-bench/lib/vip-functional-library/lib/libencintase_noreuse.a
+
+CLINK_LIBFPGA_BASELINE = $(FPGA_LIBS) /homes/chshibo/Shibo/vip-bench/lib/vip-functional-library/lib/libencintfpga_baseline.a
+CLINK_LIBASE_BASELINE =  $(ASE_LIBS) /homes/chshibo/Shibo/vip-bench/lib/vip-functional-library/lib/libencintase_baseline.a
+
 ENC_SIM =
 ENC_DIFF = diff
 

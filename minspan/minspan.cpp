@@ -17,7 +17,7 @@ using std::endl;
 // 
 
 // V represents the number of vertex in the graph G
-const int V = 10;
+const int V = 100;
 
 // this are the names(representation) of each vertex
 const std::string vertName[V] = {"Home","z-mall","st.pet","office","school","motel","restr.","library","airport","barber"};

@@ -18,11 +18,13 @@ FPGA_LIB = libencintfpga
 ASE_LIB = libencintase
 AFU_JSON_INFO = datatypes/include/afu_json_info.h
 
-all: $(SRCS_OBJS) $(ENC_LIB_OBJECT) all_reuse all_noreuse;
+all: $(SRCS_OBJS) $(ENC_LIB_OBJECT) all_reuse all_noreuse all_baseline;
 
 all_reuse: fpga ase ;
 
 all_noreuse: fpga_noreuse ase_noreuse ;
+
+all_baseline: fpga_baseline ase_baseline ;
 
 fpga: $(AFU_JSON_INFO) $(LIB_DIR)/$(FPGA_LIB).a ;
 
@@ -32,10 +34,17 @@ fpga_noreuse: $(AFU_JSON_INFO) $(LIB_DIR)/$(FPGA_LIB)_noreuse.a ;
 
 ase_noreuse: $(AFU_JSON_INFO) $(LIB_DIR)/$(ASE_LIB)_noreuse.a ;
 
+fpga_baseline: $(AFU_JSON_INFO) $(LIB_DIR)/$(FPGA_LIB)_baseline.a ;
+
+ase_baseline: $(AFU_JSON_INFO) $(LIB_DIR)/$(ASE_LIB)_baseline.a ;
+
 $(LIB_DIR)/$(FPGA_LIB).a: $(OBJ_DIR)/$(FPGA_LIB).o   $(SRCS_OBJS_PATH) $(ENC_LIB_OBJECT)
 	ar crf $@ $^ 
 
 $(LIB_DIR)/$(FPGA_LIB)_noreuse.a: $(OBJ_DIR)/$(FPGA_LIB)_noreuse.o  $(SRCS_OBJS_PATH) $(ENC_LIB_OBJECT)
+	ar crf $@ $^ 
+
+$(LIB_DIR)/$(FPGA_LIB)_baseline.a: $(OBJ_DIR)/$(FPGA_LIB)_baseline.o  $(SRCS_OBJS_PATH) $(ENC_LIB_OBJECT)
 	ar crf $@ $^ 
 
 $(OBJ_DIR)/$(FPGA_LIB).o:  $(SRCS) 
@@ -43,6 +52,9 @@ $(OBJ_DIR)/$(FPGA_LIB).o:  $(SRCS)
 
 $(OBJ_DIR)/$(FPGA_LIB)_noreuse.o:  $(SRCS) 
 	$(CXX) -c  $^ -o $@ $(CPPFLAGS) -D NOREUSE $(LDFLAGS) $(FPGA_LIBS) -lrt
+
+$(OBJ_DIR)/$(FPGA_LIB)_baseline.o:  $(SRCS) 
+	$(CXX) -c  $^ -o $@ $(CPPFLAGS) -D BASELINE $(LDFLAGS) $(FPGA_LIBS) -lrt
 
 # AFU info from JSON file, including AFU UUID
 $(AFU_JSON_INFO): ../../hw/bdx-rtl.json
@@ -54,11 +66,17 @@ $(LIB_DIR)/$(ASE_LIB).a: $(OBJ_DIR)/$(ASE_LIB).o  $(SRCS_OBJS_PATH) $(ENC_LIB_OB
 $(LIB_DIR)/$(ASE_LIB)_noreuse.a: $(OBJ_DIR)/$(ASE_LIB)_noreuse.o  $(SRCS_OBJS_PATH) $(ENC_LIB_OBJECT)
 	ar crf $@ $^ 
 
+$(LIB_DIR)/$(ASE_LIB)_baseline.a: $(OBJ_DIR)/$(ASE_LIB)_baseline.o  $(SRCS_OBJS_PATH) $(ENC_LIB_OBJECT)
+	ar crf $@ $^ 
+
 $(OBJ_DIR)/$(ASE_LIB).o: $(SRCS) 
 	$(CXX) -c  $^ $(CPPFLAGS) -D REUSE $(LDFLAGS) $(ASE_LIBS) -lrt -o $@
 
 $(OBJ_DIR)/$(ASE_LIB)_noreuse.o: $(SRCS) 
 	$(CXX) -c  $^ $(CPPFLAGS) -D NOREUSE $(LDFLAGS) $(ASE_LIBS) -lrt -o $@
+
+$(OBJ_DIR)/$(ASE_LIB)_baseline.o: $(SRCS) 
+	$(CXX) -c  $^ $(CPPFLAGS) -D BASELINE $(LDFLAGS) $(ASE_LIBS) -lrt -o $@
 
 $(OBJ_DIR)/%.o: %.cpp
 	$(CXX) -c  $^ $(CPPFLAGS) $(LDFLAGS) $(ASE_LIBS) -lrt -o $(OBJ_DIR)/$(notdir $@)

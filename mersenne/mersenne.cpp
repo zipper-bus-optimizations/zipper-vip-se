@@ -44,8 +44,8 @@ using namespace std;
 #include "../config.h"
 
 /* Period parameters */  
-#define N 624
-#define M 397
+#define N 50000
+#define M 50000
 
 VIP_ENCUINT MATRIX_A;     /* constant vector a */
 VIP_ENCUINT UPPER_MASK;   /* most significant w-r bits */

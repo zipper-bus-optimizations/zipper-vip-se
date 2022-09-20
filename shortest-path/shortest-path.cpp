@@ -7,7 +7,7 @@
 #include "../common/utils.h"
  
 // Number of vertices in the graph
-#define V 8
+#define V 40
  
 /* Define Infinite as a large enough value. This value will be used
   for vertices not connected to each other */
