@@ -188,7 +188,8 @@ enc_int enc_int::compute(enc_int const &obj1, enc_int const &obj2, const uint8_t
 		ops[0].addr = offset + cacheline + (id << 14) + (1 << 15);
 		// std::cout<<"cacheline: "<< std::bitset<16>(cacheline)<<std::endl;
 		Operand op;
-		memcpy(op.val, this->val.value,sizeof(op.val));
+		this->get_val();
+		memcpy(&op.val, &this->val.value,sizeof(op.val));
 		op.valid_w_id = id + 2;
 		mempcpy(((void*)req->c_type() + CALC_OFFSET_IN_BYTE(req_q_pointer) + CALC_CACHELINE_OFFSET_IN_BYTE(req_q_pointer)), &op, READ_GRANULARITY);
 		// printf("cal:%d, cacheline:%d,offset:%d\n", CALC_OFFSET_IN_BYTE(req_q_pointer), CALC_CACHELINE_OFFSET_IN_BYTE(req_q_pointer), CALC_OFFSET_IN_BYTE(req_q_pointer) + CALC_CACHELINE_OFFSET_IN_BYTE(req_q_pointer));
@@ -209,7 +210,8 @@ enc_int enc_int::compute(enc_int const &obj1, enc_int const &obj2, const uint8_t
 		// std::cout << "num cacheline: "<< (req_q_pointer%TOTAL_ENTRIES)/NUM_OPERAND_PER_CACHELINE<<std::endl;
 		// std::cout<< "cacheline: "<< std::bitset<16>(cacheline)<<std::endl;
 		Operand op;
-		memcpy(op.val, obj1.val.value,sizeof(op.val));
+		obj1.get_val();
+		memcpy(&op.val, &obj1.val.value,sizeof(op.val));
 		op.valid_w_id = id + 2;
 		mempcpy(((void*)req->c_type() + CALC_OFFSET_IN_BYTE(req_q_pointer) + CALC_CACHELINE_OFFSET_IN_BYTE(req_q_pointer)), &op, READ_GRANULARITY);
 		// printf("cal:%d, cacheline:%d,offset:%d\n", CALC_OFFSET_IN_BYTE(req_q_pointer), CALC_CACHELINE_OFFSET_IN_BYTE(req_q_pointer), CALC_OFFSET_IN_BYTE(req_q_pointer) + CALC_CACHELINE_OFFSET_IN_BYTE(req_q_pointer));
@@ -226,7 +228,7 @@ enc_int enc_int::compute(enc_int const &obj1, enc_int const &obj2, const uint8_t
 	ops[0].addr = offset + cacheline + (id << 14) + (1 << 15);
 	Operand op;
 	this->get_val();
-	memcpy(op.val, this->val.value,sizeof(op.val));
+	memcpy(&op.val, &this->val.value,sizeof(op.val));
 	op.valid_w_id = id + 2;
 	// printf("id: %d",id);
 	mempcpy(((void*)req->c_type() + CALC_OFFSET_IN_BYTE(req_q_pointer) + CALC_CACHELINE_OFFSET_IN_BYTE(req_q_pointer)), &op, READ_GRANULARITY);
@@ -237,7 +239,7 @@ enc_int enc_int::compute(enc_int const &obj1, enc_int const &obj2, const uint8_t
 	id = CALC_ID(req_q_pointer);
 	ops[1].addr = offset + cacheline + (id << 14) + (1 << 15);
 	obj1.get_val();
-	memcpy(op.val, obj1.val.value,sizeof(op.val));
+	memcpy(&op.val, &obj1.val.value,sizeof(op.val));
 	op.valid_w_id = id + 2;
 	// printf("id: %d",id);
 	mempcpy(((void*)req->c_type() + CALC_OFFSET_IN_BYTE(req_q_pointer) + CALC_CACHELINE_OFFSET_IN_BYTE(req_q_pointer)), &op, READ_GRANULARITY);
@@ -257,7 +259,8 @@ enc_int enc_int::compute(enc_int const &obj1, enc_int const &obj2, const uint8_t
 			uint8_t id = CALC_ID(req_q_pointer);
 			ops[2].addr = offset + cacheline + (id << 14) + (1 << 15);
 			Operand op;
-			memcpy(op.val, obj2.val.value,sizeof(op.val));
+			obj2.get_val();
+			memcpy(&op.val, &obj2.val.value,sizeof(op.val));
 			op.valid_w_id = id + 2;
 			mempcpy(((void*)req->c_type() + CALC_OFFSET_IN_BYTE(req_q_pointer) + CALC_CACHELINE_OFFSET_IN_BYTE(req_q_pointer)), &op, READ_GRANULARITY);
 	// printf("cal:%d, cacheline:%d,offset:%d\n", CALC_OFFSET_IN_BYTE(req_q_pointer), CALC_CACHELINE_OFFSET_IN_BYTE(req_q_pointer), CALC_OFFSET_IN_BYTE(req_q_pointer) + CALC_CACHELINE_OFFSET_IN_BYTE(req_q_pointer));
