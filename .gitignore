@@ -13,6 +13,10 @@ mem.out
 */bin/*
 hw/build_sim/*
 hw/build_fpga/*
+hw/build_sim_coalesce/*
+hw/build_fpga_coalesce/*
+hw/build_sim_nocoalesce/*
+hw/build_fpga_nocoalesce/*
 */*.ase
 */*.fpga
 lib/vip-functional-library/lib/*
