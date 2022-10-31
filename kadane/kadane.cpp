@@ -90,6 +90,8 @@ main()
     max_sum = kadane(arr, n, ends_at);
   }
   fprintf(stdout, "The maximum sum of a contiguous subarray is %d (ending at index %d)\n", VIP_DEC(max_sum), VIP_DEC(ends_at));
+  poll_performance();
+  close_accel();
   return 0;
 }
 

@@ -116,7 +116,8 @@ main(void)
 		cout<<"The elements of `elements2' are distinct"<<endl;
 	else
 		cout<<"The elements of `elements2' are not distinct (e.g., " << VIP_DEC(dup) << " is duplicated)"<<endl;
-
+  poll_performance();
+  close_accel();
 	return 0;
 }
 

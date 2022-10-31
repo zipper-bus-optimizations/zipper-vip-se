@@ -95,16 +95,18 @@ main(void)
 
 	fprintf(stdout, "Max value: %d\n", VIP_DEC(K[n][W]));
 	
-  fprintf(stdout, "Selected packs:\n");
-  while (n != 0)
-  {
-    if (VIP_DEC(K[n][w]) != VIP_DEC(K[n - 1][w])) {
-      fprintf(stdout, "  Package %d with wt=%d and val=%d\n", n, VIP_DEC(wt[n - 1]), VIP_DEC(val[n - 1]));
-      w = w - VIP_DEC(wt[n-1]);
-    }
-    n--;
-  }
-  fprintf(stdout, "Total weight: %d\n", W - w);
+  // fprintf(stdout, "Selected packs:\n");
+  // while (n != 0)
+  // {
+  //   if (VIP_DEC(K[n][w]) != VIP_DEC(K[n - 1][w])) {
+  //     fprintf(stdout, "  Package %d with wt=%d and val=%d\n", n, VIP_DEC(wt[n - 1]), VIP_DEC(val[n - 1]));
+  //     w = w - VIP_DEC(wt[n-1]);
+  //   }
+  //   n--;
+  // }
+  // fprintf(stdout, "Total weight: %d\n", W - w);
+  poll_performance();
+  close_accel();
 
   return 0;
 }

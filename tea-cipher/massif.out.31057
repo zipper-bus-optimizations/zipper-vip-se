@@ -1,0 +1,888 @@
+desc: (none)
+cmd: ./tea-cipher.enc.ase
+time_unit: i
+#-----------
+snapshot=0
+#-----------
+time=0
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=1
+#-----------
+time=2032165
+mem_heap_B=1024
+mem_heap_extra_B=8
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=2
+#-----------
+time=2339702
+mem_heap_B=33880
+mem_heap_extra_B=32
+mem_stacks_B=0
+heap_tree=detailed
+n3: 33880 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 32816 0x5F6DC5F: __alloc_dir (in /usr/lib64/libc-2.17.so)
+  n1: 32816 0x524D185: opae_plugin_mgr_detect_platforms (pluginmgr.c:517)
+   n1: 32816 0x524DBF3: opae_plugin_mgr_initialize (pluginmgr.c:644)
+    n1: 32816 0x524E7F7: fpgaInitialize (api-shell.c:136)
+     n1: 32816 0x400F971: _dl_init (in /usr/lib64/ld-2.17.so)
+      n0: 32816 0x4001158: ??? (in /usr/lib64/ld-2.17.so)
+ n1: 1024 0x5F71373: getpwuid (in /usr/lib64/libc-2.17.so)
+  n1: 1024 0x524C337: find_cfg (pluginmgr.c:106)
+   n1: 1024 0x524D9D5: opae_plugin_mgr_initialize (pluginmgr.c:726)
+    n1: 1024 0x524E7F7: fpgaInitialize (api-shell.c:136)
+     n1: 1024 0x400F971: _dl_init (in /usr/lib64/ld-2.17.so)
+      n0: 1024 0x4001158: ??? (in /usr/lib64/ld-2.17.so)
+ n0: 40 in 3 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=3
+#-----------
+time=2538844
+mem_heap_B=33880
+mem_heap_extra_B=32
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=4
+#-----------
+time=2748420
+mem_heap_B=2768
+mem_heap_extra_B=128
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=5
+#-----------
+time=2884579
+mem_heap_B=36064
+mem_heap_extra_B=144
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=6
+#-----------
+time=3078089
+mem_heap_B=68880
+mem_heap_extra_B=152
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=7
+#-----------
+time=3384760
+mem_heap_B=5091
+mem_heap_extra_B=189
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=8
+#-----------
+time=3641944
+mem_heap_B=5819
+mem_heap_extra_B=205
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=9
+#-----------
+time=3899824
+mem_heap_B=77983
+mem_heap_extra_B=1089
+mem_stacks_B=0
+heap_tree=detailed
+n7: 77983 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n3: 65632 0x5F6DC5F: __alloc_dir (in /usr/lib64/libc-2.17.so)
+  n2: 32816 0x6CBFA8E: sysfs_initialize (sysfs.c:619)
+   n1: 32816 0x6CC0FFB: sysfs_foreach_device (sysfs.c:561)
+    n1: 32816 0x6CAFF9E: xfpga_fpgaEnumerate (enum.c:526)
+     n1: 32816 0x524E3E4: opae_enumerate (api-shell.c:527)
+      n1: 32816 0x524E1A3: opae_plugin_mgr_for_each_adapter (pluginmgr.c:772)
+       n1: 32816 0x5250BD8: fpgaEnumerate (api-shell.c:675)
+        n1: 32816 0x503E0C8: opae::fpga::types::token::enumerate(std::vector<std::shared_ptr<opae::fpga::types::properties>, std::allocator<std::shared_ptr<opae::fpga::types::properties> > > const&) (token.cpp:48)
+         n1: 32816 0x406EEE: init_accel() (enc_fpga_impl.cpp:72)
+          n0: 32816 0x404B75: main (tea-cipher.cpp:48)
+   n0: 0 in 1 place, below massif's threshold (1.00%)
+  n2: 32816 0x6CC0841: sysfs_initialize (sysfs.c:432)
+   n1: 32816 0x6CC0FFB: sysfs_foreach_device (sysfs.c:561)
+    n1: 32816 0x6CAFF9E: xfpga_fpgaEnumerate (enum.c:526)
+     n1: 32816 0x524E3E4: opae_enumerate (api-shell.c:527)
+      n1: 32816 0x524E1A3: opae_plugin_mgr_for_each_adapter (pluginmgr.c:772)
+       n1: 32816 0x5250BD8: fpgaEnumerate (api-shell.c:675)
+        n1: 32816 0x503E0C8: opae::fpga::types::token::enumerate(std::vector<std::shared_ptr<opae::fpga::types::properties>, std::allocator<std::shared_ptr<opae::fpga::types::properties> > > const&) (token.cpp:48)
+         n1: 32816 0x406EEE: init_accel() (enc_fpga_impl.cpp:72)
+          n0: 32816 0x404B75: main (tea-cipher.cpp:48)
+   n0: 0 in 1 place, below massif's threshold (1.00%)
+  n0: 0 in 1 place, below massif's threshold (1.00%)
+ n0: 6283 in 59 places, all below massif's threshold (1.00%)
+ n3: 1936 0x5F8C02E: parse_expression (in /usr/lib64/libc-2.17.so)
+  n1: 968 0x5F8C40A: parse_branch.constprop.31 (in /usr/lib64/libc-2.17.so)
+   n1: 968 0x5F8CA4C: re_compile_internal (in /usr/lib64/libc-2.17.so)
+    n1: 968 0x5F8E31E: regcomp (in /usr/lib64/libc-2.17.so)
+     n2: 968 0x6CC08B4: sysfs_initialize (sysfs.c:390)
+      n1: 968 0x6CC0FFB: sysfs_foreach_device (sysfs.c:561)
+       n1: 968 0x6CAFF9E: xfpga_fpgaEnumerate (enum.c:526)
+        n1: 968 0x524E3E4: opae_enumerate (api-shell.c:527)
+         n1: 968 0x524E1A3: opae_plugin_mgr_for_each_adapter (pluginmgr.c:772)
+          n1: 968 0x5250BD8: fpgaEnumerate (api-shell.c:675)
+           n1: 968 0x503E0C8: opae::fpga::types::token::enumerate(std::vector<std::shared_ptr<opae::fpga::types::properties>, std::allocator<std::shared_ptr<opae::fpga::types::properties> > > const&) (token.cpp:48)
+            n1: 968 0x406EEE: init_accel() (enc_fpga_impl.cpp:72)
+             n0: 968 0x404B75: main (tea-cipher.cpp:48)
+      n0: 0 in 1 place, below massif's threshold (1.00%)
+  n1: 968 0x5F8C442: parse_branch.constprop.31 (in /usr/lib64/libc-2.17.so)
+   n1: 968 0x5F8CA4C: re_compile_internal (in /usr/lib64/libc-2.17.so)
+    n2: 968 0x5F8E31E: regcomp (in /usr/lib64/libc-2.17.so)
+     n2: 968 0x6CC08B4: sysfs_initialize (sysfs.c:390)
+      n1: 968 0x6CC0FFB: sysfs_foreach_device (sysfs.c:561)
+       n1: 968 0x6CAFF9E: xfpga_fpgaEnumerate (enum.c:526)
+        n1: 968 0x524E3E4: opae_enumerate (api-shell.c:527)
+         n1: 968 0x524E1A3: opae_plugin_mgr_for_each_adapter (pluginmgr.c:772)
+          n1: 968 0x5250BD8: fpgaEnumerate (api-shell.c:675)
+           n1: 968 0x503E0C8: opae::fpga::types::token::enumerate(std::vector<std::shared_ptr<opae::fpga::types::properties>, std::allocator<std::shared_ptr<opae::fpga::types::properties> > > const&) (token.cpp:48)
+            n1: 968 0x406EEE: init_accel() (enc_fpga_impl.cpp:72)
+             n0: 968 0x404B75: main (tea-cipher.cpp:48)
+      n0: 0 in 1 place, below massif's threshold (1.00%)
+     n0: 0 in 1 place, below massif's threshold (1.00%)
+  n0: 0 in 2 places, all below massif's threshold (1.00%)
+ n1: 1172 0x400B1AD: _dl_new_object (in /usr/lib64/ld-2.17.so)
+  n1: 1172 0x4005FC2: _dl_map_object_from_fd (in /usr/lib64/ld-2.17.so)
+   n1: 1172 0x40085F4: _dl_map_object (in /usr/lib64/ld-2.17.so)
+    n1: 1172 0x4014252: dl_open_worker (in /usr/lib64/ld-2.17.so)
+     n1: 1172 0x400F782: _dl_catch_error (in /usr/lib64/ld-2.17.so)
+      n1: 1172 0x4013B39: _dl_open (in /usr/lib64/ld-2.17.so)
+       n1: 1172 0x6497EE9: dlopen_doit (in /usr/lib64/libdl-2.17.so)
+        n1: 1172 0x400F782: _dl_catch_error (in /usr/lib64/ld-2.17.so)
+         n1: 1172 0x64984EB: _dlerror_run (in /usr/lib64/libdl-2.17.so)
+          n1: 1172 0x6497F7F: dlopen@@GLIBC_2.2.5 (in /usr/lib64/libdl-2.17.so)
+           n1: 1172 0x524D041: opae_plugin_mgr_alloc_adapter (pluginmgr.c:143)
+            n1: 1172 0x524DE46: opae_plugin_mgr_initialize (pluginmgr.c:681)
+             n1: 1172 0x524E7F7: fpgaInitialize (api-shell.c:136)
+              n1: 1172 0x400F971: _dl_init (in /usr/lib64/ld-2.17.so)
+               n0: 1172 0x4001158: ??? (in /usr/lib64/ld-2.17.so)
+ n1: 1024 0x5F71373: getpwuid (in /usr/lib64/libc-2.17.so)
+  n1: 1024 0x524C337: find_cfg (pluginmgr.c:106)
+   n1: 1024 0x524D9D5: opae_plugin_mgr_initialize (pluginmgr.c:726)
+    n1: 1024 0x524E7F7: fpgaInitialize (api-shell.c:136)
+     n1: 1024 0x400F971: _dl_init (in /usr/lib64/ld-2.17.so)
+      n0: 1024 0x4001158: ??? (in /usr/lib64/ld-2.17.so)
+ n1: 968 0x5F8C385: parse_branch (in /usr/lib64/libc-2.17.so)
+  n1: 968 0x5F8AB6D: parse_expression (in /usr/lib64/libc-2.17.so)
+   n1: 968 0x5F8C442: parse_branch.constprop.31 (in /usr/lib64/libc-2.17.so)
+    n1: 968 0x5F8CA4C: re_compile_internal (in /usr/lib64/libc-2.17.so)
+     n1: 968 0x5F8E31E: regcomp (in /usr/lib64/libc-2.17.so)
+      n2: 968 0x6CC08B4: sysfs_initialize (sysfs.c:390)
+       n1: 968 0x6CC0FFB: sysfs_foreach_device (sysfs.c:561)
+        n1: 968 0x6CAFF9E: xfpga_fpgaEnumerate (enum.c:526)
+         n1: 968 0x524E3E4: opae_enumerate (api-shell.c:527)
+          n1: 968 0x524E1A3: opae_plugin_mgr_for_each_adapter (pluginmgr.c:772)
+           n1: 968 0x5250BD8: fpgaEnumerate (api-shell.c:675)
+            n1: 968 0x503E0C8: opae::fpga::types::token::enumerate(std::vector<std::shared_ptr<opae::fpga::types::properties>, std::allocator<std::shared_ptr<opae::fpga::types::properties> > > const&) (token.cpp:48)
+             n1: 968 0x406EEE: init_accel() (enc_fpga_impl.cpp:72)
+              n0: 968 0x404B75: main (tea-cipher.cpp:48)
+       n0: 0 in 1 place, below massif's threshold (1.00%)
+ n1: 968 0x5F8DA05: re_compile_internal (in /usr/lib64/libc-2.17.so)
+  n1: 968 0x5F8E31E: regcomp (in /usr/lib64/libc-2.17.so)
+   n2: 968 0x6CC08B4: sysfs_initialize (sysfs.c:390)
+    n1: 968 0x6CC0FFB: sysfs_foreach_device (sysfs.c:561)
+     n1: 968 0x6CAFF9E: xfpga_fpgaEnumerate (enum.c:526)
+      n1: 968 0x524E3E4: opae_enumerate (api-shell.c:527)
+       n1: 968 0x524E1A3: opae_plugin_mgr_for_each_adapter (pluginmgr.c:772)
+        n1: 968 0x5250BD8: fpgaEnumerate (api-shell.c:675)
+         n1: 968 0x503E0C8: opae::fpga::types::token::enumerate(std::vector<std::shared_ptr<opae::fpga::types::properties>, std::allocator<std::shared_ptr<opae::fpga::types::properties> > > const&) (token.cpp:48)
+          n1: 968 0x406EEE: init_accel() (enc_fpga_impl.cpp:72)
+           n0: 968 0x404B75: main (tea-cipher.cpp:48)
+    n0: 0 in 1 place, below massif's threshold (1.00%)
+#-----------
+snapshot=10
+#-----------
+time=4046381
+mem_heap_B=74179
+mem_heap_extra_B=557
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=11
+#-----------
+time=4232483
+mem_heap_B=8355
+mem_heap_extra_B=309
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=12
+#-----------
+time=4458213
+mem_heap_B=83251
+mem_heap_extra_B=493
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=13
+#-----------
+time=4668166
+mem_heap_B=86031
+mem_heap_extra_B=585
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=14
+#-----------
+time=4888803
+mem_heap_B=147059
+mem_heap_extra_B=661
+mem_stacks_B=0
+heap_tree=detailed
+n3: 147059 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n2: 131104 0x6CC41B1: wsid_tracker_init (wsid_list.c:57)
+  n1: 131072 0x6CB3E25: xfpga_fpgaOpen (open.c:94)
+   n1: 131072 0x524E8ED: fpgaOpen (api-shell.c:163)
+    n1: 131072 0x503ED48: opae::fpga::types::handle::open(void*, int) (handle.cpp:56)
+     n1: 131072 0x503EF37: opae::fpga::types::handle::open(std::shared_ptr<opae::fpga::types::token>, int) (handle.cpp:68)
+      n1: 131072 0x406FBA: init_accel() (enc_fpga_impl.cpp:80)
+       n0: 131072 0x404B75: main (tea-cipher.cpp:48)
+  n0: 32 in 1 place, below massif's threshold (1.00%)
+ n0: 8851 in 86 places, all below massif's threshold (1.00%)
+ n2: 7104 0x6CB1258: build_error_list (error.c:313)
+  n1: 5328 0x6CC45AF: token_add (token_list.c:128)
+   n1: 5328 0x6CB0025: xfpga_fpgaEnumerate (enum.c:616)
+    n1: 5328 0x524E3E4: opae_enumerate (api-shell.c:527)
+     n1: 5328 0x524E1A3: opae_plugin_mgr_for_each_adapter (pluginmgr.c:772)
+      n1: 5328 0x5250BD8: fpgaEnumerate (api-shell.c:675)
+       n1: 5328 0x503E0C8: opae::fpga::types::token::enumerate(std::vector<std::shared_ptr<opae::fpga::types::properties>, std::allocator<std::shared_ptr<opae::fpga::types::properties> > > const&) (token.cpp:48)
+        n1: 5328 0x406EEE: init_accel() (enc_fpga_impl.cpp:72)
+         n0: 5328 0x404B75: main (tea-cipher.cpp:48)
+  n1: 1776 0x6CB145E: build_error_list (error.c:303)
+   n1: 1776 0x6CC45AF: token_add (token_list.c:128)
+    n1: 1776 0x6CB0025: xfpga_fpgaEnumerate (enum.c:616)
+     n1: 1776 0x524E3E4: opae_enumerate (api-shell.c:527)
+      n1: 1776 0x524E1A3: opae_plugin_mgr_for_each_adapter (pluginmgr.c:772)
+       n1: 1776 0x5250BD8: fpgaEnumerate (api-shell.c:675)
+        n1: 1776 0x503E0C8: opae::fpga::types::token::enumerate(std::vector<std::shared_ptr<opae::fpga::types::properties>, std::allocator<std::shared_ptr<opae::fpga::types::properties> > > const&) (token.cpp:48)
+         n1: 1776 0x406EEE: init_accel() (enc_fpga_impl.cpp:72)
+          n0: 1776 0x404B75: main (tea-cipher.cpp:48)
+#-----------
+snapshot=15
+#-----------
+time=5191162
+mem_heap_B=145645
+mem_heap_extra_B=579
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=16
+#-----------
+time=5485561
+mem_heap_B=145765
+mem_heap_extra_B=659
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=17
+#-----------
+time=5683323
+mem_heap_B=145669
+mem_heap_extra_B=595
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=18
+#-----------
+time=5835768
+mem_heap_B=145645
+mem_heap_extra_B=579
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=19
+#-----------
+time=6063262
+mem_heap_B=145741
+mem_heap_extra_B=643
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=20
+#-----------
+time=6265575
+mem_heap_B=145789
+mem_heap_extra_B=691
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=21
+#-----------
+time=6587874
+mem_heap_B=145789
+mem_heap_extra_B=691
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=22
+#-----------
+time=6910181
+mem_heap_B=145789
+mem_heap_extra_B=691
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=23
+#-----------
+time=7232480
+mem_heap_B=145789
+mem_heap_extra_B=691
+mem_stacks_B=0
+heap_tree=detailed
+n3: 145789 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n2: 131104 0x6CC41B1: wsid_tracker_init (wsid_list.c:57)
+  n1: 131072 0x6CB3E25: xfpga_fpgaOpen (open.c:94)
+   n1: 131072 0x524E8ED: fpgaOpen (api-shell.c:163)
+    n1: 131072 0x503ED48: opae::fpga::types::handle::open(void*, int) (handle.cpp:56)
+     n1: 131072 0x503EF37: opae::fpga::types::handle::open(std::shared_ptr<opae::fpga::types::token>, int) (handle.cpp:68)
+      n1: 131072 0x406FBA: init_accel() (enc_fpga_impl.cpp:80)
+       n0: 131072 0x404B75: main (tea-cipher.cpp:48)
+  n0: 32 in 1 place, below massif's threshold (1.00%)
+ n0: 7581 in 88 places, all below massif's threshold (1.00%)
+ n2: 7104 0x6CB1258: build_error_list (error.c:313)
+  n1: 5328 0x6CC45AF: token_add (token_list.c:128)
+   n1: 5328 0x6CB0025: xfpga_fpgaEnumerate (enum.c:616)
+    n1: 5328 0x524E3E4: opae_enumerate (api-shell.c:527)
+     n1: 5328 0x524E1A3: opae_plugin_mgr_for_each_adapter (pluginmgr.c:772)
+      n1: 5328 0x5250BD8: fpgaEnumerate (api-shell.c:675)
+       n1: 5328 0x503E0C8: opae::fpga::types::token::enumerate(std::vector<std::shared_ptr<opae::fpga::types::properties>, std::allocator<std::shared_ptr<opae::fpga::types::properties> > > const&) (token.cpp:48)
+        n1: 5328 0x406EEE: init_accel() (enc_fpga_impl.cpp:72)
+         n0: 5328 0x404B75: main (tea-cipher.cpp:48)
+  n1: 1776 0x6CB145E: build_error_list (error.c:303)
+   n1: 1776 0x6CC45AF: token_add (token_list.c:128)
+    n1: 1776 0x6CB0025: xfpga_fpgaEnumerate (enum.c:616)
+     n1: 1776 0x524E3E4: opae_enumerate (api-shell.c:527)
+      n1: 1776 0x524E1A3: opae_plugin_mgr_for_each_adapter (pluginmgr.c:772)
+       n1: 1776 0x5250BD8: fpgaEnumerate (api-shell.c:675)
+        n1: 1776 0x503E0C8: opae::fpga::types::token::enumerate(std::vector<std::shared_ptr<opae::fpga::types::properties>, std::allocator<std::shared_ptr<opae::fpga::types::properties> > > const&) (token.cpp:48)
+         n1: 1776 0x406EEE: init_accel() (enc_fpga_impl.cpp:72)
+          n0: 1776 0x404B75: main (tea-cipher.cpp:48)
+#-----------
+snapshot=24
+#-----------
+time=7554787
+mem_heap_B=145789
+mem_heap_extra_B=691
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=25
+#-----------
+time=7877086
+mem_heap_B=145789
+mem_heap_extra_B=691
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=26
+#-----------
+time=8149660
+mem_heap_B=145717
+mem_heap_extra_B=643
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=27
+#-----------
+time=8319383
+mem_heap_B=145741
+mem_heap_extra_B=643
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=28
+#-----------
+time=8505159
+mem_heap_B=145765
+mem_heap_extra_B=675
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=29
+#-----------
+time=8769826
+mem_heap_B=145693
+mem_heap_extra_B=611
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=30
+#-----------
+time=8939551
+mem_heap_B=145717
+mem_heap_extra_B=627
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=31
+#-----------
+time=9116567
+mem_heap_B=145717
+mem_heap_extra_B=643
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=32
+#-----------
+time=9286292
+mem_heap_B=145741
+mem_heap_extra_B=643
+mem_stacks_B=0
+heap_tree=detailed
+n3: 145741 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n2: 131104 0x6CC41B1: wsid_tracker_init (wsid_list.c:57)
+  n1: 131072 0x6CB3E25: xfpga_fpgaOpen (open.c:94)
+   n1: 131072 0x524E8ED: fpgaOpen (api-shell.c:163)
+    n1: 131072 0x503ED48: opae::fpga::types::handle::open(void*, int) (handle.cpp:56)
+     n1: 131072 0x503EF37: opae::fpga::types::handle::open(std::shared_ptr<opae::fpga::types::token>, int) (handle.cpp:68)
+      n1: 131072 0x406FBA: init_accel() (enc_fpga_impl.cpp:80)
+       n0: 131072 0x404B75: main (tea-cipher.cpp:48)
+  n0: 32 in 1 place, below massif's threshold (1.00%)
+ n0: 7533 in 88 places, all below massif's threshold (1.00%)
+ n2: 7104 0x6CB1258: build_error_list (error.c:313)
+  n1: 5328 0x6CC45AF: token_add (token_list.c:128)
+   n1: 5328 0x6CB0025: xfpga_fpgaEnumerate (enum.c:616)
+    n1: 5328 0x524E3E4: opae_enumerate (api-shell.c:527)
+     n1: 5328 0x524E1A3: opae_plugin_mgr_for_each_adapter (pluginmgr.c:772)
+      n1: 5328 0x5250BD8: fpgaEnumerate (api-shell.c:675)
+       n1: 5328 0x503E0C8: opae::fpga::types::token::enumerate(std::vector<std::shared_ptr<opae::fpga::types::properties>, std::allocator<std::shared_ptr<opae::fpga::types::properties> > > const&) (token.cpp:48)
+        n1: 5328 0x406EEE: init_accel() (enc_fpga_impl.cpp:72)
+         n0: 5328 0x404B75: main (tea-cipher.cpp:48)
+  n1: 1776 0x6CB145E: build_error_list (error.c:303)
+   n1: 1776 0x6CC45AF: token_add (token_list.c:128)
+    n1: 1776 0x6CB0025: xfpga_fpgaEnumerate (enum.c:616)
+     n1: 1776 0x524E3E4: opae_enumerate (api-shell.c:527)
+      n1: 1776 0x524E1A3: opae_plugin_mgr_for_each_adapter (pluginmgr.c:772)
+       n1: 1776 0x5250BD8: fpgaEnumerate (api-shell.c:675)
+        n1: 1776 0x503E0C8: opae::fpga::types::token::enumerate(std::vector<std::shared_ptr<opae::fpga::types::properties>, std::allocator<std::shared_ptr<opae::fpga::types::properties> > > const&) (token.cpp:48)
+         n1: 1776 0x406EEE: init_accel() (enc_fpga_impl.cpp:72)
+          n0: 1776 0x404B75: main (tea-cipher.cpp:48)
+#-----------
+snapshot=33
+#-----------
+time=9472072
+mem_heap_B=145765
+mem_heap_extra_B=675
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=34
+#-----------
+time=9736735
+mem_heap_B=145693
+mem_heap_extra_B=611
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=35
+#-----------
+time=9906460
+mem_heap_B=145717
+mem_heap_extra_B=627
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=36
+#-----------
+time=10083478
+mem_heap_B=145717
+mem_heap_extra_B=643
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=37
+#-----------
+time=10253212
+mem_heap_B=145741
+mem_heap_extra_B=643
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=38
+#-----------
+time=10438988
+mem_heap_B=145765
+mem_heap_extra_B=675
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=39
+#-----------
+time=10703655
+mem_heap_B=145693
+mem_heap_extra_B=611
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=40
+#-----------
+time=10873380
+mem_heap_B=145717
+mem_heap_extra_B=627
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=41
+#-----------
+time=11050396
+mem_heap_B=145717
+mem_heap_extra_B=643
+mem_stacks_B=0
+heap_tree=detailed
+n3: 145717 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n2: 131104 0x6CC41B1: wsid_tracker_init (wsid_list.c:57)
+  n1: 131072 0x6CB3E25: xfpga_fpgaOpen (open.c:94)
+   n1: 131072 0x524E8ED: fpgaOpen (api-shell.c:163)
+    n1: 131072 0x503ED48: opae::fpga::types::handle::open(void*, int) (handle.cpp:56)
+     n1: 131072 0x503EF37: opae::fpga::types::handle::open(std::shared_ptr<opae::fpga::types::token>, int) (handle.cpp:68)
+      n1: 131072 0x406FBA: init_accel() (enc_fpga_impl.cpp:80)
+       n0: 131072 0x404B75: main (tea-cipher.cpp:48)
+  n0: 32 in 1 place, below massif's threshold (1.00%)
+ n0: 7509 in 88 places, all below massif's threshold (1.00%)
+ n2: 7104 0x6CB1258: build_error_list (error.c:313)
+  n1: 5328 0x6CC45AF: token_add (token_list.c:128)
+   n1: 5328 0x6CB0025: xfpga_fpgaEnumerate (enum.c:616)
+    n1: 5328 0x524E3E4: opae_enumerate (api-shell.c:527)
+     n1: 5328 0x524E1A3: opae_plugin_mgr_for_each_adapter (pluginmgr.c:772)
+      n1: 5328 0x5250BD8: fpgaEnumerate (api-shell.c:675)
+       n1: 5328 0x503E0C8: opae::fpga::types::token::enumerate(std::vector<std::shared_ptr<opae::fpga::types::properties>, std::allocator<std::shared_ptr<opae::fpga::types::properties> > > const&) (token.cpp:48)
+        n1: 5328 0x406EEE: init_accel() (enc_fpga_impl.cpp:72)
+         n0: 5328 0x404B75: main (tea-cipher.cpp:48)
+  n1: 1776 0x6CB145E: build_error_list (error.c:303)
+   n1: 1776 0x6CC45AF: token_add (token_list.c:128)
+    n1: 1776 0x6CB0025: xfpga_fpgaEnumerate (enum.c:616)
+     n1: 1776 0x524E3E4: opae_enumerate (api-shell.c:527)
+      n1: 1776 0x524E1A3: opae_plugin_mgr_for_each_adapter (pluginmgr.c:772)
+       n1: 1776 0x5250BD8: fpgaEnumerate (api-shell.c:675)
+        n1: 1776 0x503E0C8: opae::fpga::types::token::enumerate(std::vector<std::shared_ptr<opae::fpga::types::properties>, std::allocator<std::shared_ptr<opae::fpga::types::properties> > > const&) (token.cpp:48)
+         n1: 1776 0x406EEE: init_accel() (enc_fpga_impl.cpp:72)
+          n0: 1776 0x404B75: main (tea-cipher.cpp:48)
+#-----------
+snapshot=42
+#-----------
+time=11220121
+mem_heap_B=145741
+mem_heap_extra_B=643
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=43
+#-----------
+time=11405897
+mem_heap_B=145765
+mem_heap_extra_B=675
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=44
+#-----------
+time=11575622
+mem_heap_B=145789
+mem_heap_extra_B=675
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=45
+#-----------
+time=11840285
+mem_heap_B=145717
+mem_heap_extra_B=627
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=46
+#-----------
+time=12017305
+mem_heap_B=145717
+mem_heap_extra_B=643
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=47
+#-----------
+time=12187030
+mem_heap_B=145741
+mem_heap_extra_B=643
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=48
+#-----------
+time=12372806
+mem_heap_B=145765
+mem_heap_extra_B=675
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=49
+#-----------
+time=12542531
+mem_heap_B=145789
+mem_heap_extra_B=675
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=50
+#-----------
+time=12695109
+mem_heap_B=145765
+mem_heap_extra_B=675
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=51
+#-----------
+time=12831636
+mem_heap_B=145741
+mem_heap_extra_B=643
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=52
+#-----------
+time=12984214
+mem_heap_B=145717
+mem_heap_extra_B=643
+mem_stacks_B=0
+heap_tree=detailed
+n3: 145717 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n2: 131104 0x6CC41B1: wsid_tracker_init (wsid_list.c:57)
+  n1: 131072 0x6CB3E25: xfpga_fpgaOpen (open.c:94)
+   n1: 131072 0x524E8ED: fpgaOpen (api-shell.c:163)
+    n1: 131072 0x503ED48: opae::fpga::types::handle::open(void*, int) (handle.cpp:56)
+     n1: 131072 0x503EF37: opae::fpga::types::handle::open(std::shared_ptr<opae::fpga::types::token>, int) (handle.cpp:68)
+      n1: 131072 0x406FBA: init_accel() (enc_fpga_impl.cpp:80)
+       n0: 131072 0x404B75: main (tea-cipher.cpp:48)
+  n0: 32 in 1 place, below massif's threshold (1.00%)
+ n0: 7509 in 88 places, all below massif's threshold (1.00%)
+ n2: 7104 0x6CB1258: build_error_list (error.c:313)
+  n1: 5328 0x6CC45AF: token_add (token_list.c:128)
+   n1: 5328 0x6CB0025: xfpga_fpgaEnumerate (enum.c:616)
+    n1: 5328 0x524E3E4: opae_enumerate (api-shell.c:527)
+     n1: 5328 0x524E1A3: opae_plugin_mgr_for_each_adapter (pluginmgr.c:772)
+      n1: 5328 0x5250BD8: fpgaEnumerate (api-shell.c:675)
+       n1: 5328 0x503E0C8: opae::fpga::types::token::enumerate(std::vector<std::shared_ptr<opae::fpga::types::properties>, std::allocator<std::shared_ptr<opae::fpga::types::properties> > > const&) (token.cpp:48)
+        n1: 5328 0x406EEE: init_accel() (enc_fpga_impl.cpp:72)
+         n0: 5328 0x404B75: main (tea-cipher.cpp:48)
+  n1: 1776 0x6CB145E: build_error_list (error.c:303)
+   n1: 1776 0x6CC45AF: token_add (token_list.c:128)
+    n1: 1776 0x6CB0025: xfpga_fpgaEnumerate (enum.c:616)
+     n1: 1776 0x524E3E4: opae_enumerate (api-shell.c:527)
+      n1: 1776 0x524E1A3: opae_plugin_mgr_for_each_adapter (pluginmgr.c:772)
+       n1: 1776 0x5250BD8: fpgaEnumerate (api-shell.c:675)
+        n1: 1776 0x503E0C8: opae::fpga::types::token::enumerate(std::vector<std::shared_ptr<opae::fpga::types::properties>, std::allocator<std::shared_ptr<opae::fpga::types::properties> > > const&) (token.cpp:48)
+         n1: 1776 0x406EEE: init_accel() (enc_fpga_impl.cpp:72)
+          n0: 1776 0x404B75: main (tea-cipher.cpp:48)
+#-----------
+snapshot=53
+#-----------
+time=13129497
+mem_heap_B=145717
+mem_heap_extra_B=627
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=54
+#-----------
+time=13282079
+mem_heap_B=145693
+mem_heap_extra_B=611
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=55
+#-----------
+time=13418606
+mem_heap_B=145669
+mem_heap_extra_B=595
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=56
+#-----------
+time=13571047
+mem_heap_B=145645
+mem_heap_extra_B=579
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=57
+#-----------
+time=13715594
+mem_heap_B=145645
+mem_heap_extra_B=579
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=58
+#-----------
+time=13865452
+mem_heap_B=145765
+mem_heap_extra_B=659
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=59
+#-----------
+time=14017630
+mem_heap_B=145765
+mem_heap_extra_B=675
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=60
+#-----------
+time=14154046
+mem_heap_B=145789
+mem_heap_extra_B=675
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=61
+#-----------
+time=14306624
+mem_heap_B=145765
+mem_heap_extra_B=675
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=62
+#-----------
+time=14443149
+mem_heap_B=145741
+mem_heap_extra_B=643
+mem_stacks_B=0
+heap_tree=detailed
+n3: 145741 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n2: 131104 0x6CC41B1: wsid_tracker_init (wsid_list.c:57)
+  n1: 131072 0x6CB3E25: xfpga_fpgaOpen (open.c:94)
+   n1: 131072 0x524E8ED: fpgaOpen (api-shell.c:163)
+    n1: 131072 0x503ED48: opae::fpga::types::handle::open(void*, int) (handle.cpp:56)
+     n1: 131072 0x503EF37: opae::fpga::types::handle::open(std::shared_ptr<opae::fpga::types::token>, int) (handle.cpp:68)
+      n1: 131072 0x406FBA: init_accel() (enc_fpga_impl.cpp:80)
+       n0: 131072 0x404B75: main (tea-cipher.cpp:48)
+  n0: 32 in 1 place, below massif's threshold (1.00%)
+ n0: 7533 in 88 places, all below massif's threshold (1.00%)
+ n2: 7104 0x6CB1258: build_error_list (error.c:313)
+  n1: 5328 0x6CC45AF: token_add (token_list.c:128)
+   n1: 5328 0x6CB0025: xfpga_fpgaEnumerate (enum.c:616)
+    n1: 5328 0x524E3E4: opae_enumerate (api-shell.c:527)
+     n1: 5328 0x524E1A3: opae_plugin_mgr_for_each_adapter (pluginmgr.c:772)
+      n1: 5328 0x5250BD8: fpgaEnumerate (api-shell.c:675)
+       n1: 5328 0x503E0C8: opae::fpga::types::token::enumerate(std::vector<std::shared_ptr<opae::fpga::types::properties>, std::allocator<std::shared_ptr<opae::fpga::types::properties> > > const&) (token.cpp:48)
+        n1: 5328 0x406EEE: init_accel() (enc_fpga_impl.cpp:72)
+         n0: 5328 0x404B75: main (tea-cipher.cpp:48)
+  n1: 1776 0x6CB145E: build_error_list (error.c:303)
+   n1: 1776 0x6CC45AF: token_add (token_list.c:128)
+    n1: 1776 0x6CB0025: xfpga_fpgaEnumerate (enum.c:616)
+     n1: 1776 0x524E3E4: opae_enumerate (api-shell.c:527)
+      n1: 1776 0x524E1A3: opae_plugin_mgr_for_each_adapter (pluginmgr.c:772)
+       n1: 1776 0x5250BD8: fpgaEnumerate (api-shell.c:675)
+        n1: 1776 0x503E0C8: opae::fpga::types::token::enumerate(std::vector<std::shared_ptr<opae::fpga::types::properties>, std::allocator<std::shared_ptr<opae::fpga::types::properties> > > const&) (token.cpp:48)
+         n1: 1776 0x406EEE: init_accel() (enc_fpga_impl.cpp:72)
+          n0: 1776 0x404B75: main (tea-cipher.cpp:48)
+#-----------
+snapshot=63
+#-----------
+time=14595729
+mem_heap_B=145717
+mem_heap_extra_B=643
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=64
+#-----------
+time=14741016
+mem_heap_B=145717
+mem_heap_extra_B=627
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=65
+#-----------
+time=14893592
+mem_heap_B=145693
+mem_heap_extra_B=611
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=66
+#-----------
+time=15030117
+mem_heap_B=145669
+mem_heap_extra_B=595
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=67
+#-----------
+time=15182566
+mem_heap_B=145645
+mem_heap_extra_B=579
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=68
+#-----------
+time=15368936
+mem_heap_B=146189
+mem_heap_extra_B=579
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=69
+#-----------
+time=15395841
+mem_heap_B=154918
+mem_heap_extra_B=618
+mem_stacks_B=0
+heap_tree=peak
+n4: 154918 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n2: 131104 0x6CC41B1: wsid_tracker_init (wsid_list.c:57)
+  n1: 131072 0x6CB3E25: xfpga_fpgaOpen (open.c:94)
+   n1: 131072 0x524E8ED: fpgaOpen (api-shell.c:163)
+    n1: 131072 0x503ED48: opae::fpga::types::handle::open(void*, int) (handle.cpp:56)
+     n1: 131072 0x503EF37: opae::fpga::types::handle::open(std::shared_ptr<opae::fpga::types::token>, int) (handle.cpp:68)
+      n1: 131072 0x406FBA: init_accel() (enc_fpga_impl.cpp:80)
+       n0: 131072 0x404B75: main (tea-cipher.cpp:48)
+  n0: 32 in 1 place, below massif's threshold (1.00%)
+ n0: 8518 in 88 places, all below massif's threshold (1.00%)
+ n1: 8192 0x5744EEA: std::basic_filebuf<char, std::char_traits<char> >::_M_allocate_internal_buffer() (in /usr/lib64/libstdc++.so.6.0.19)
+  n1: 8192 0x5745530: std::basic_filebuf<char, std::char_traits<char> >::open(char const*, std::_Ios_Openmode) (in /usr/lib64/libstdc++.so.6.0.19)
+   n1: 8192 0x574669E: std::basic_ifstream<char, std::char_traits<char> >::basic_ifstream(char const*, std::_Ios_Openmode) (in /usr/lib64/libstdc++.so.6.0.19)
+    n1: 8192 0x406607: record_mem() (utils.cpp:121)
+     n1: 8192 0x405735: Stopwatch::~Stopwatch() (utils.h:94)
+      n0: 8192 0x404CBB: main (tea-cipher.cpp:62)
+ n2: 7104 0x6CB1258: build_error_list (error.c:313)
+  n1: 5328 0x6CC45AF: token_add (token_list.c:128)
+   n1: 5328 0x6CB0025: xfpga_fpgaEnumerate (enum.c:616)
+    n1: 5328 0x524E3E4: opae_enumerate (api-shell.c:527)
+     n1: 5328 0x524E1A3: opae_plugin_mgr_for_each_adapter (pluginmgr.c:772)
+      n1: 5328 0x5250BD8: fpgaEnumerate (api-shell.c:675)
+       n1: 5328 0x503E0C8: opae::fpga::types::token::enumerate(std::vector<std::shared_ptr<opae::fpga::types::properties>, std::allocator<std::shared_ptr<opae::fpga::types::properties> > > const&) (token.cpp:48)
+        n1: 5328 0x406EEE: init_accel() (enc_fpga_impl.cpp:72)
+         n0: 5328 0x404B75: main (tea-cipher.cpp:48)
+  n1: 1776 0x6CB145E: build_error_list (error.c:303)
+   n1: 1776 0x6CC45AF: token_add (token_list.c:128)
+    n1: 1776 0x6CB0025: xfpga_fpgaEnumerate (enum.c:616)
+     n1: 1776 0x524E3E4: opae_enumerate (api-shell.c:527)
+      n1: 1776 0x524E1A3: opae_plugin_mgr_for_each_adapter (pluginmgr.c:772)
+       n1: 1776 0x5250BD8: fpgaEnumerate (api-shell.c:675)
+        n1: 1776 0x503E0C8: opae::fpga::types::token::enumerate(std::vector<std::shared_ptr<opae::fpga::types::properties>, std::allocator<std::shared_ptr<opae::fpga::types::properties> > > const&) (token.cpp:48)
+         n1: 1776 0x406EEE: init_accel() (enc_fpga_impl.cpp:72)
+          n0: 1776 0x404B75: main (tea-cipher.cpp:48)
+#-----------
+snapshot=70
+#-----------
+time=15581214
+mem_heap_B=14395
+mem_heap_extra_B=509
+mem_stacks_B=0
+heap_tree=empty

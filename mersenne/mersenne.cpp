@@ -151,6 +151,10 @@ main(void)
         cout << endl;;
     }
   }
+  poll_performance();
+  close_accel();
+
+
   return 0;
 } 
 

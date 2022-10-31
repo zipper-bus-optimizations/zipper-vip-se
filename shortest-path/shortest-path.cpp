@@ -126,6 +126,8 @@ main(void)
  
   // Print the shortest distance matrix
   printSolution(dist);
+  poll_performance();
+  close_accel();
   return 0;
 }
 

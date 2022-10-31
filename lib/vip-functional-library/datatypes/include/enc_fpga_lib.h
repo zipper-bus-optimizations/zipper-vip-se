@@ -54,14 +54,61 @@ struct Performance_array{
 	bool valid = 0;
 };
 
-class enc_int{
-	public:
 
+template <class T>
+class Counter
+{
+  private:
+      static uint64_t created;
+	  static uint64_t living;
+		static uint64_t most;
+  public:
+    Counter()
+    {
+       created++;
+	   living++;
+	   if (most < living) {
+		most = living;
+	   }
+    }  
+    Counter(const Counter &c)
+    {
+       created++;
+	   living++;
+	   if (most < living) {
+		most = living;
+	   }
+    }   
+    ~Counter()
+    {
+       living--;
+    }    
+    static uint64_t getCreated() {
+
+         return created;
+    }
+	static uint64_t getMost() {
+		return most;
+	}
+};
+
+template<class T> 
+uint64_t Counter<T>::living = 0; 
+template<class T>
+uint64_t Counter<T>::created = 0;
+template<class T>
+uint64_t Counter<T>::most = 0;
+
+class enc_int: private Counter<enc_int>{
+	public:
+		using Counter<enc_int>::getCreated;
+		using Counter<enc_int>::getMost;
 		bit128_t val;
 		bool valid;
 		bool in_fpga;
 		uint8_t location;
-
+		bool was_computed = false;
+		uint64_t global_location = 0;
 		void print_val();
 		enc_int& get_val();
 		enc_int(const int64_t in_val);

@@ -17,6 +17,12 @@ hw/build_sim_coalesce/*
 hw/build_fpga_coalesce/*
 hw/build_sim_nocoalesce/*
 hw/build_fpga_nocoalesce/*
+*/build_sim/*
+*/build_fpga/*
+*/build_sim_coalesce/*
+*/build_fpga_coalesce/*
+*/build_sim_nocoalesce/*
+*/build_fpga_nocoalesce/*
 */*.ase
 */*.fpga
 lib/vip-functional-library/lib/*

@@ -269,5 +269,8 @@ main()
 	// displayPath(source,destination,path);
 	// displayGraph1(graph, path);
 	displayTree(graph, path);
+  poll_performance();
+  close_accel();
+
 }
 

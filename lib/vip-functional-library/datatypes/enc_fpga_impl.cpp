@@ -23,14 +23,25 @@ static handle::ptr_t accel = nullptr;
 static uint64_t global_counter = 0;
 shared_buffer::ptr_t req;
 shared_buffer::ptr_t result;
+uint64_t total_reuse = 0;
+uint64_t total_call_memory = 0;
+uint64_t total_call_compute = 0;
+uint64_t total_effcient_compute = 0;
 uint8_t req_q_pointer = 0;
+bool finish = false;
 static ResultSlot result_track[NUM_FPGA_ENTRIES];
-
+uint64_t distances[20];
 void poll_performance(){
 	memset(((void*)result->c_type())+(NUM_FPGA_ENTRIES*WRITE_GRANULARITY), 0, sizeof(Performance_array));
 	accel->write_csr64(24, NUM_FPGA_ENTRIES);
 	volatile Performance_array* perf = (Performance_array*)(((void*)result->c_type())+(NUM_FPGA_ENTRIES*WRITE_GRANULARITY));
 	while(!perf->valid){}
+	std::cout <<"Total call memory: "<< total_call_memory<<std::endl;
+	std::cout <<"Total reuse: "<< total_reuse<<std::endl;
+	std::cout <<"Total call compute: "<< total_call_compute<<std::endl;
+	std::cout <<"Total efficient compute: "<< total_effcient_compute<<std::endl;
+	std::cout <<"Total created object: "<< Counter<enc_int>::getCreated() << std::endl;
+	std::cout <<"Greatest living object: "<< Counter<enc_int>::getMost() << std::endl;
 	std::cout <<"Total req: "<< perf->total_cycles<<std::endl;
 	std::cout <<"[0, 10)"<< perf->mem_req_cycles[0] <<std::endl;
 	std::cout <<"[10, 50)"<< perf->mem_req_cycles[1] <<std::endl;
@@ -45,9 +56,15 @@ void poll_performance(){
 	std::cout <<"[800, 900)"<< perf->mem_req_cycles[10] <<std::endl;
 	std::cout <<"[900, 1000)"<< perf->mem_req_cycles[11] <<std::endl;
 	std::cout <<"[1000, )"<< perf->mem_req_cycles[12] <<std::endl;
+	for(int i = 0;i < 20; i++){
+		std::cout << distances[i]/(double)total_call_memory;
+		if(i<19) std::cout<<", ";
+		else std::cout <<std::endl;
+	}
 }
 
 int64_t close_accel(){
+	finish = true;
 	accel->reset();
 	req->release();
 	result->release();
@@ -79,7 +96,7 @@ int64_t init_accel(){
 		accel->reset();
 		req = shared_buffer::allocate(accel, NUM_CACHELINE* SIZE_OF_CACHELINE);
 		result = shared_buffer::allocate(accel,(NUM_FPGA_ENTRIES+1)*WRITE_GRANULARITY);
-	  std::fill_n(req->c_type(), NUM_OPERAND_ENTRIES*READ_GRANULARITY, 0);
+	  std::fill_n(req->c_type(), NUM_CACHELINE* SIZE_OF_CACHELINE, 0);
 	  std::fill_n(result->c_type(), (NUM_FPGA_ENTRIES+1)*WRITE_GRANULARITY, 0);
 
 		// open accelerator and map MMIO
@@ -170,6 +187,8 @@ enc_int& enc_int::get_val(){
 
 enc_int enc_int::compute(enc_int const &obj1, enc_int const &obj2, const uint8_t inst){
 	// std::cout <<"in compute"<<std::endl;
+	total_call_compute++;
+	uint8_t flag = 0;
 	OpAddr ops[3];
 	enc_int ret;
 	uint8_t result_q_pointer = global_counter % NUM_FPGA_ENTRIES;
@@ -177,11 +196,22 @@ enc_int enc_int::compute(enc_int const &obj1, enc_int const &obj2, const uint8_t
 	//std::cout << "mark 1"<<std::endl;
 	/*with reuse*/
 	#ifdef REUSE
-	if( this->in_fpga && result_q_pointer!= this->location){
+	total_call_memory++;
+	if(this->was_computed){
+		uint64_t distance = global_counter-this->global_location;
+		if(distance>=20){
+			distances[19]++;
+		}else if(distance >=1){
+			distances[distance-1]++;
+		}
+	}
+	if( this->in_fpga && (result_q_pointer%SIMULATED_ENTRIES)!= (this->location%SIMULATED_ENTRIES)){
 	//std::cout << "mark 2"<<std::endl;
+		total_reuse++;
 		ops[0].addr = this->location + (1 << 14);
 	}else{
 	//std::cout << "mark 3"<<std::endl;
+		flag = 1;
 		uint16_t offset = CALC_OFFSET(req_q_pointer);
 		uint16_t cacheline = CALC_CACHELINE_ONE_HOT(req_q_pointer);
 		uint8_t id = CALC_ID(req_q_pointer);
@@ -195,12 +225,22 @@ enc_int enc_int::compute(enc_int const &obj1, enc_int const &obj2, const uint8_t
 		// printf("cal:%d, cacheline:%d,offset:%d\n", CALC_OFFSET_IN_BYTE(req_q_pointer), CALC_CACHELINE_OFFSET_IN_BYTE(req_q_pointer), CALC_OFFSET_IN_BYTE(req_q_pointer) + CALC_CACHELINE_OFFSET_IN_BYTE(req_q_pointer));
 		req_q_pointer++;
 	}
-
-	if( obj1.in_fpga && result_q_pointer!= obj1.location ){
+	if(obj1.was_computed){
+		uint64_t distance = global_counter-obj1.global_location;
+		if(distance>=20){
+			distances[19]++;
+		}else if(distance >=1){
+			distances[distance-1]++;
+		}
+	}
+	total_call_memory++;
+	if( obj1.in_fpga && (result_q_pointer%SIMULATED_ENTRIES)!= (obj1.location%SIMULATED_ENTRIES) ){
 	//std::cout << "mark 4"<<std::endl;
+		total_reuse++;
 		ops[1].addr = obj1.location + (1 << 14);
 	}else{
 	//std::cout << "mark 5"<<std::endl;
+		flag = 1;
 		uint16_t offset = CALC_OFFSET(req_q_pointer);
 		uint16_t cacheline = CALC_CACHELINE_ONE_HOT(req_q_pointer);
 		uint8_t id = CALC_ID(req_q_pointer);
@@ -249,11 +289,22 @@ enc_int enc_int::compute(enc_int const &obj1, enc_int const &obj2, const uint8_t
 	#endif
 
 	if(inst == Inst::CMOV){
+		if(obj2.was_computed){
+			uint64_t distance = global_counter-obj2.global_location;
+			if(distance>=20){
+				distances[19]++;
+			}else if(distance >=1){
+				distances[distance-1]++;
+			}
+		}
 		/*with reuse*/
 		#ifdef REUSE
-		if(obj2.in_fpga && result_q_pointer!= obj2.location ){
+		total_call_memory++;
+		if(obj2.in_fpga && (result_q_pointer%SIMULATED_ENTRIES)!= (obj2.location%SIMULATED_ENTRIES) ){
+			total_reuse++;
 			ops[2].addr = obj2.location  + (1 << 14);
 		}else{
+			flag = 1;
 			uint16_t offset = CALC_OFFSET(req_q_pointer);
 			uint16_t cacheline = CALC_CACHELINE_ONE_HOT(req_q_pointer);
 			uint8_t id = CALC_ID(req_q_pointer);
@@ -275,7 +326,7 @@ enc_int enc_int::compute(enc_int const &obj1, enc_int const &obj2, const uint8_t
 		ops[2].addr = offset + cacheline + (id << 14) + (1 << 15);
 		Operand op;
 		obj2.get_val();
-		memcpy(op.val, obj2.val.value,sizeof(op.val));
+		memcpy(&op.val, &obj2.val.value,sizeof(op.val));
 		op.valid_w_id = id + 2;
 		mempcpy(((void*)req->c_type() + CALC_OFFSET_IN_BYTE(req_q_pointer) + CALC_CACHELINE_OFFSET_IN_BYTE(req_q_pointer)), &op, READ_GRANULARITY);	
 		req_q_pointer++;
@@ -284,14 +335,20 @@ enc_int enc_int::compute(enc_int const &obj1, enc_int const &obj2, const uint8_t
 		ops[2].addr = 0;
 	}
 
-	get_val_at_slot(result_q_pointer, false);
+	#ifdef REUSE
+	if (flag == 0) {total_effcient_compute++;}
+	#endif
+
+	get_val_at_slot((result_q_pointer+8-SIMULATED_ENTRIES)%8, false);
+
 	result_track[result_q_pointer].ptr = nullptr;
 	result_track[result_q_pointer].crntEncInt.clear();
 
 	ret.valid = false;
 	ret.location = result_q_pointer;
 	ret.in_fpga = true;
-	
+	ret.was_computed = true;
+	ret.global_location = global_counter;
 	result_track[result_q_pointer].ptr = (Result*)((void*)result->c_type() +result_q_pointer*WRITE_GRANULARITY);
 
 	uint64_t write_req = 0;
@@ -317,13 +374,13 @@ enc_int enc_int::compute(enc_int const &obj1, enc_int const &obj2, const uint8_t
 	#ifdef BASELINE
 		ret.get_val();
 	#endif
-
+	// std::cout << global_counter<<std::endl;
 	return ret;
 }
 
 enc_int::~enc_int(){
 	// std::cout <<"in ~enc_int"<<std::endl;
-	if(this->in_fpga){
+	if(this->in_fpga && !finish){
 		result_track[this->location].crntEncInt.remove(this);
 	}
 	// std::cout <<"~enc_int success"<<std::endl;
@@ -376,6 +433,8 @@ enc_int& enc_int::operator = (enc_int const &obj){
 	this->valid = obj.valid;
 	this->in_fpga = obj.in_fpga;
 	this->location = obj.location;
+	this->was_computed = obj.was_computed;
+	this->global_location = obj.global_location;
 	if(this->in_fpga){
 		result_track[this->location].crntEncInt.push_back(this);
 	}

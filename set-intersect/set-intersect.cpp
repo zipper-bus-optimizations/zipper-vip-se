@@ -94,6 +94,8 @@ main(void)
       fprintf(stdout, "  setA_and_setB[%u] = %d\n", j++, VIP_DEC(setA[i]));
   }
   fprintf(stdout, "INFO: cardinality(setA & setB) == %u\n", j);
+  poll_performance();
+  close_accel();
   return 0;
 }
 

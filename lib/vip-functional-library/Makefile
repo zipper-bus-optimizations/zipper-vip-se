@@ -10,7 +10,11 @@ OBJ_DIR = obj
 SRCS_OBJS = $(OBJ_DIR)/vip-functional-library.o $(OBJ_DIR)/interface/parameters.o $(OBJ_DIR)/rng/rng_interface.o $(OBJ_DIR)/interface/interface.o $(OBJ_DIR)/rng/mersenne-twister-1/mersenne-twister.o $(OBJ_DIR)/ciphers/xor/xor_interface.o
 SRCS_OBJS_PATH = $(addprefix $(OBJ_DIR)/,$(notdir $(SRCS_OBJS)))
 ENC_LIB_OBJECT= ciphers/aes/tinyCrypt/lib/aes_decrypt.o ciphers/aes/tinyCrypt/lib/aes_encrypt.o ciphers/aes/tinyCrypt/lib/utils.o rng/mersenne-twister-1/mersenne-twister.o 
-
+ifeq ($(FPGATYPE), pac)
+	JSON_SRC_FILE = ../../hw_discrete/bdx-rtl.json
+else
+	JSON_SRC_FILE = ../../hw_bdx/bdx-rtl.json
+endif
 
 SRCS = datatypes/enc_fpga_impl.cpp
 
@@ -57,7 +61,7 @@ $(OBJ_DIR)/$(FPGA_LIB)_baseline.o:  $(SRCS)
 	$(CXX) -c  $^ -o $@ $(CPPFLAGS) -D BASELINE $(LDFLAGS) $(FPGA_LIBS) -lrt
 
 # AFU info from JSON file, including AFU UUID
-$(AFU_JSON_INFO): ../../hw/bdx-rtl.json
+$(AFU_JSON_INFO): $(JSON_SRC_FILE)
 	afu_json_mgr json-info --afu-json=$^ --c-hdr=$@
 
 $(LIB_DIR)/$(ASE_LIB).a: $(OBJ_DIR)/$(ASE_LIB).o  $(SRCS_OBJS_PATH) $(ENC_LIB_OBJECT)

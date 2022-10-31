@@ -67,6 +67,9 @@ main(void)
   std::cout << "GCD of list:" << VIP_DEC(gcd_of_n) << std::endl;
 
   delete[] a;
+  poll_performance();
+  close_accel();
+
   return 0;
 }
 

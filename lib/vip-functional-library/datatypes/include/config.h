@@ -11,9 +11,8 @@ struct Operand{
 #define SIZE_OF_CACHELINE 64
 
 static const uint64_t NUM_OPERAND = 3;
-#if defined(REUSE) || defined(NOREUSE) || defined(BASELINE)
 static const uint64_t NUM_FPGA_ENTRIES = 8;
-#endif
+static const uint64_t SIMULATED_ENTRIES = 8;
 
 // #ifdef BASELINE
 // static const uint64_t NUM_FPGA_ENTRIES = 1;
