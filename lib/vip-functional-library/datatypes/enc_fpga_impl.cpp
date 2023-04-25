@@ -115,6 +115,21 @@ int64_t init_accel(){
 	// std::cout <<"initliazed success"<<std::endl;
 }
 
+enc_int::enc_int(const enc_int &obj){
+	if(this->in_fpga){
+		result_track[this->location].crntEncInt.remove(this);
+	}
+	this->val = obj.val;
+	this->valid = obj.valid;
+	this->in_fpga = obj.in_fpga;
+	this->location = obj.location;
+	this->was_computed = obj.was_computed;
+	this->global_location = obj.global_location;
+	if(this->in_fpga){
+		result_track[this->location].crntEncInt.push_back(this);
+	}
+	//std::cout <<"mark 14"<<std::endl;
+}
 
 enc_int::enc_int(const int64_t in_val){
 	this->val = encrypt_64_128(in_val);

@@ -115,6 +115,7 @@ class enc_int: private Counter<enc_int>{
 		enc_int(const bit128_t in_val);
 		enc_int();
 		~enc_int();
+		enc_int(const enc_int &obj);
 		enc_int compute(enc_int const &obj1, enc_int const &obj2, const uint8_t inst);
 		enc_int operator + (enc_int const &obj);
 		enc_int operator - (enc_int const &obj);
