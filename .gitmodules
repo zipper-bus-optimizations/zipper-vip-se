@@ -1,3 +1,6 @@
 [submodule "lib/SEAL/SEAL"]
 	path = lib/SEAL-3.4/SEAL
 	url = https://github.com/microsoft/SEAL.git
+[submodule "SE-prototype"]
+	path = SE-prototype
+	url = https://github.com/SE-and-verification/SE-prototype.git
